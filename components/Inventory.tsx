@@ -1,8 +1,9 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { GameItem, Character } from '../types';
 import { HOUSE_THEMES } from '../constants';
-import { Shield, Sword, Wand2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Shield, Wand2, AlertTriangle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface InventoryProps {
   character: Character;
@@ -13,13 +14,71 @@ interface InventoryProps {
 
 export const Inventory: React.FC<InventoryProps> = ({ character, onEquip, onUnequip, onSell }) => {
   const theme = HOUSE_THEMES[character.house] || HOUSE_THEMES.Gryffindor;
+  const [itemToSell, setItemToSell] = useState<GameItem | null>(null);
+
+  const handleSellClick = (item: GameItem) => {
+    setItemToSell(item);
+  };
+
+  const confirmSell = () => {
+    if (itemToSell) {
+      onSell(itemToSell);
+      setItemToSell(null);
+    }
+  };
+
+  const cancelSell = () => {
+    setItemToSell(null);
+  };
+
+  const getImage = (item: GameItem) => {
+    return character.customItemImages[item.id] || item.imageUrl;
+  };
 
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+      className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative"
     >
+      <AnimatePresence>
+        {itemToSell && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className={`bg-[#1a1a2e] border ${theme.border} p-6 rounded-xl w-full max-w-sm shadow-2xl text-center`}
+            >
+              <AlertTriangle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+              <h3 className="text-xl font-magic text-white mb-2">Sell this item?</h3>
+              <div className="flex justify-center mb-4">
+                 <img src={getImage(itemToSell)} className="w-16 h-16 rounded object-cover border border-slate-600" />
+              </div>
+              <p className="text-slate-300 mb-6">
+                Are you sure you want to sell <span className={`${theme.primary} font-bold`}>{itemToSell.name}</span> for <span className="text-yellow-400 font-bold">{Math.floor(itemToSell.price * 0.5)} Galleons</span>?
+                <br/><span className="text-xs text-slate-500 italic mt-1 block">This action cannot be undone.</span>
+              </p>
+              
+              <div className="flex gap-3">
+                <button 
+                  onClick={cancelSell}
+                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={confirmSell}
+                  className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded font-bold transition-colors"
+                >
+                  Confirm Sale
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Equipped Section - Sticky and Scrollable */}
       <div className={`lg:col-span-1 bg-[#1a1a2e] p-6 rounded-xl border ${theme.border} h-[calc(100vh-120px)] sticky top-6 flex flex-col`}>
         <h2 className={`text-2xl font-magic ${theme.secondary} mb-6 flex items-center gap-2 shrink-0`}>
@@ -41,7 +100,7 @@ export const Inventory: React.FC<InventoryProps> = ({ character, onEquip, onUneq
                 className={`bg-slate-800/80 p-4 rounded-lg border ${theme.border} shadow-lg relative group`}
               >
                 <div className="flex items-center gap-4">
-                  <img src={item.imageUrl} alt={item.name} className={`w-12 h-12 rounded object-cover ${theme.accentBg}`} />
+                  <img src={getImage(item)} alt={item.name} className={`w-12 h-12 rounded object-cover ${theme.accentBg}`} />
                   <div>
                     <h4 className={`text-white font-bold font-serif`}>{item.name}</h4>
                     <p className="text-xs text-slate-400 flex gap-2">
@@ -100,7 +159,7 @@ export const Inventory: React.FC<InventoryProps> = ({ character, onEquip, onUneq
                     className={`bg-slate-800 p-3 rounded-lg border border-slate-700 hover:border-${theme.secondary.split('-')[1]}-400/50 transition-all group flex flex-col justify-between min-h-[200px]`}
                   >
                     <div className="relative">
-                        <img src={item.imageUrl} alt={item.name} className="w-full h-32 object-cover rounded mb-3 bg-slate-900" />
+                        <img src={getImage(item)} alt={item.name} className="w-full h-32 object-cover rounded mb-3 bg-slate-900" />
                         <span className="absolute top-1 right-1 text-[10px] bg-black/60 px-1 rounded text-slate-300 uppercase tracking-wide">{item.type}</span>
                     </div>
                     <h4 className="text-sm font-bold text-slate-200 font-serif leading-tight mb-1">{item.name}</h4>
@@ -113,7 +172,7 @@ export const Inventory: React.FC<InventoryProps> = ({ character, onEquip, onUneq
                             Equip
                         </button>
                         <button 
-                          onClick={() => onSell(item)}
+                          onClick={() => handleSellClick(item)}
                           className="flex-1 bg-yellow-600/20 hover:bg-yellow-600 text-yellow-400 hover:text-white text-xs py-1.5 rounded transition-colors"
                         >
                           Sell {Math.floor(item.price * 0.5)}G

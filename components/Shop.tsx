@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef } from 'react';
 import { GameItem, Character, ItemType } from '../types';
 import { SHOP_ITEMS, HOUSE_THEMES } from '../constants';
-import { ShoppingBag, Coins, Lock, Wand2, Sparkles, Book, Check } from 'lucide-react';
+import { ShoppingBag, Coins, Lock, Wand2, Sparkles, Book, Check, Camera, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ShopProps {
   character: Character;
   onBuy: (item: GameItem) => void;
+  onUpdateItemImage: (itemId: number, newUrl: string) => void;
 }
 
-export const Shop: React.FC<ShopProps> = ({ character, onBuy }) => {
+export const Shop: React.FC<ShopProps> = ({ character, onBuy, onUpdateItemImage }) => {
   const [filter, setFilter] = useState<'all' | ItemType>('all');
   const theme = HOUSE_THEMES[character.house] || HOUSE_THEMES.Gryffindor;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [editingItemId, setEditingItemId] = useState<number | null>(null);
 
   const filteredItems = SHOP_ITEMS.filter(item => filter === 'all' || item.type === filter);
 
@@ -22,12 +26,39 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy }) => {
     { id: 'equipment', label: 'Magical Equipment', icon: Book },
   ];
 
+  const handleImageUploadClick = (itemId: number) => {
+    setEditingItemId(itemId);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && editingItemId) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          onUpdateItemImage(editingItemId, reader.result);
+        }
+        setEditingItemId(null);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="space-y-6"
     >
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        className="hidden" 
+        accept="image/*" 
+        onChange={handleFileChange} 
+      />
+
       <div className={`flex flex-col md:flex-row justify-between items-center bg-[#1a1a2e] p-6 rounded-xl border ${theme.border}`}>
         <div>
           <h2 className={`text-3xl font-magic ${theme.secondary}`}>Diagon Alley Market</h2>
@@ -63,6 +94,7 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy }) => {
         {filteredItems.map((item) => {
           const isOwned = character.inventory.some(i => i.id === item.id) || character.equipped.some(i => i.id === item.id);
           const canAfford = character.gold >= item.price;
+          const displayImage = character.customItemImages[item.id] || item.imageUrl;
           
           return (
             <motion.div
@@ -72,14 +104,24 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy }) => {
               animate={{ opacity: 1, scale: 1 }}
               className={`group bg-[#1e293b] rounded-xl overflow-hidden border border-slate-700 hover:border-${theme.secondary.split('-')[1]}-500/50 transition-colors`}
             >
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 group-hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
                 <img 
-                  src={item.imageUrl} 
+                  src={displayImage} 
                   alt={item.name}
                   className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#1e293b] to-transparent h-24"></div>
+                
+                {/* Custom Image Upload Button */}
+                <button 
+                    onClick={(e) => { e.stopPropagation(); handleImageUploadClick(item.id); }}
+                    className="absolute top-3 right-24 bg-black/60 hover:bg-black/80 p-1.5 rounded-full text-white border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Customize Item Image"
+                >
+                    <Upload className="w-3 h-3" />
+                </button>
+
                 <span className="absolute top-3 right-3 bg-black/50 backdrop-blur px-2 py-1 rounded text-xs text-white border border-white/10 uppercase font-bold">
                   {item.type === 'wand' ? 'Wand' : item.type === 'spell' ? 'Spell' : 'Artifact'}
                 </span>

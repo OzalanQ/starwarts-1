@@ -1,3 +1,4 @@
+
 export type ItemType = 'wand' | 'spell' | 'equipment';
 
 export interface GameItem {
@@ -27,6 +28,8 @@ export interface Character {
   avatarUrl: string;
   inventory: GameItem[];
   equipped: GameItem[];
+  // Map of Item ID -> Base64 Image String
+  customItemImages: Record<number, string>;
   stats: {
     attack: number;
     defense: number;

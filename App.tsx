@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Character, GameItem, View, BattleResult } from './types';
 import { INITIAL_CHARACTER } from './constants';
@@ -16,12 +17,13 @@ const App: React.FC = () => {
 
   // Simulated persistence
   useEffect(() => {
-    const saved = localStorage.getItem('hogwarts_save_v3'); // Version increment for new state structure
+    const saved = localStorage.getItem('hogwarts_save_v4'); // Incremented version for new image feature
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         // Ensure new fields exist if loading from old save
         if (!parsed.matchHistory) parsed.matchHistory = [];
+        if (!parsed.customItemImages) parsed.customItemImages = {};
         setCharacter(parsed);
       } catch (e) {
         console.error("Save file corrupted");
@@ -30,7 +32,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('hogwarts_save_v3', JSON.stringify(character));
+    localStorage.setItem('hogwarts_save_v4', JSON.stringify(character));
   }, [character]);
 
   const showNotification = (msg: string, type: 'success' | 'error' = 'success') => {
@@ -59,6 +61,17 @@ const App: React.FC = () => {
   const handleUpdateAvatar = (newUrl: string) => {
     setCharacter(prev => ({ ...prev, avatarUrl: newUrl }));
     showNotification("Portrait updated.");
+  };
+  
+  const handleUpdateItemImage = (itemId: number, newUrl: string) => {
+    setCharacter(prev => ({
+        ...prev,
+        customItemImages: {
+            ...prev.customItemImages,
+            [itemId]: newUrl
+        }
+    }));
+    showNotification("Magical appearance altered.");
   };
 
   const handleBuy = (item: GameItem) => {
@@ -169,7 +182,7 @@ const App: React.FC = () => {
 
         <div className="max-w-6xl mx-auto mt-4 md:mt-0 pb-20 md:pb-0">
           {currentView === View.DASHBOARD && <Dashboard character={character} onUpdateGold={handleUpdateGold} onUpdateName={handleUpdateName} onUpdateHouse={handleUpdateHouse} onUpdateAvatar={handleUpdateAvatar} />}
-          {currentView === View.SHOP && <Shop character={character} onBuy={handleBuy} />}
+          {currentView === View.SHOP && <Shop character={character} onBuy={handleBuy} onUpdateItemImage={handleUpdateItemImage} />}
           {currentView === View.INVENTORY && <Inventory character={character} onEquip={handleEquip} onUnequip={handleUnequip} onSell={handleSell} />}
           {currentView === View.DUEL && <DuelingClub character={character} onBattleComplete={handleBattleComplete} />}
         </div>

@@ -1,3 +1,4 @@
+
 import { GameItem, Character, HouseTheme } from './types';
 
 export const HOUSE_THEMES: Record<string, HouseTheme> = {
@@ -46,6 +47,7 @@ export const INITIAL_CHARACTER: Character = {
   avatarUrl: "https://picsum.photos/seed/wizard/200/200",
   inventory: [],
   equipped: [],
+  customItemImages: {},
   stats: {
     attack: 0,
     defense: 0,
