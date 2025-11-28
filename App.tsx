@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Character, GameItem, View, BattleResult } from './types';
+import { Character, GameItem, View, BattleResult, Ingredient, Potion } from './types';
 import { INITIAL_CHARACTER } from './constants';
 import { Navigation } from './components/Navigation';
 import { Dashboard } from './components/Dashboard';
 import { Shop } from './components/Shop';
 import { Inventory } from './components/Inventory';
 import { DuelingClub } from './components/DuelingClub';
+import { QuizRoom } from './components/QuizRoom';
+import { PotionsClass } from './components/PotionsClass';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,13 +19,16 @@ const App: React.FC = () => {
 
   // Simulated persistence
   useEffect(() => {
-    const saved = localStorage.getItem('hogwarts_save_v4'); // Incremented version for new image feature
+    const saved = localStorage.getItem('hogwarts_save_v7'); // Version bump
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         // Ensure new fields exist if loading from old save
         if (!parsed.matchHistory) parsed.matchHistory = [];
         if (!parsed.customItemImages) parsed.customItemImages = {};
+        if (!parsed.solvedQuestions) parsed.solvedQuestions = [];
+        if (!parsed.ingredients) parsed.ingredients = {};
+        if (!parsed.potions) parsed.potions = {};
         setCharacter(parsed);
       } catch (e) {
         console.error("Save file corrupted");
@@ -32,7 +37,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('hogwarts_save_v4', JSON.stringify(character));
+    localStorage.setItem('hogwarts_save_v7', JSON.stringify(character));
   }, [character]);
 
   const showNotification = (msg: string, type: 'success' | 'error' = 'success') => {
@@ -94,7 +99,6 @@ const App: React.FC = () => {
   };
 
   const handleEquip = (item: GameItem) => {
-    // Limit removed: characters can now equip as many items as they own.
     setCharacter(prev => ({
       ...prev,
       inventory: prev.inventory.filter(i => i.id !== item.id),
@@ -152,11 +156,70 @@ const App: React.FC = () => {
     }
   };
 
+  const handleQuizComplete = (goldChange: number, solvedQuestion?: string) => {
+    setCharacter(prev => {
+      const newGold = Math.max(0, prev.gold + goldChange);
+      let newSolved = prev.solvedQuestions || [];
+      
+      if (solvedQuestion) {
+        newSolved = [...newSolved, solvedQuestion];
+      }
+
+      return {
+        ...prev,
+        gold: newGold,
+        solvedQuestions: newSolved
+      };
+    });
+  };
+
+  const handleBuyIngredient = (ingredient: Ingredient, cost: number) => {
+    if (character.gold < cost) return;
+    
+    setCharacter(prev => ({
+      ...prev,
+      gold: prev.gold - cost,
+      ingredients: {
+        ...prev.ingredients,
+        [ingredient.id]: (prev.ingredients[ingredient.id] || 0) + 1
+      }
+    }));
+    showNotification(`Bought ${ingredient.name}`);
+  };
+
+  const handleBrewPotion = (potion: Potion, success: boolean) => {
+    setCharacter(prev => {
+      const newIngredients = { ...prev.ingredients };
+      // Consume ingredients regardless of success
+      potion.ingredients.forEach(ingId => {
+        if (newIngredients[ingId] > 0) newIngredients[ingId]--;
+      });
+
+      const newPotions = { ...prev.potions };
+      if (success) {
+        newPotions[potion.id] = (newPotions[potion.id] || 0) + 1;
+      }
+
+      return {
+        ...prev,
+        ingredients: newIngredients,
+        potions: newPotions
+      };
+    });
+
+    if (success) {
+        showNotification(`Brewed ${potion.name}!`);
+    } else {
+        showNotification(`Brew failed! Ingredients lost.`, 'error');
+    }
+  };
+
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#0f172a] text-slate-200 font-serif overflow-hidden transition-colors duration-700">
-      {/* Starfield Background Effect */}
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#050510] text-slate-200 font-serif overflow-hidden transition-colors duration-700">
+      {/* Atmospheric Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 animate-pulse"></div>
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1e293b] via-[#0f172a] to-[#020617]"></div>
+         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
       </div>
 
       <Navigation currentView={currentView} onNavigate={setCurrentView} house={character.house} />
@@ -168,23 +231,25 @@ const App: React.FC = () => {
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -50 }}
-              className={`fixed top-6 right-6 z-50 px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 border ${
+              className={`fixed top-6 right-6 z-[100] px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 border backdrop-blur-md ${
                 notification.type === 'success' 
                 ? 'bg-green-900/90 border-green-500 text-green-100' 
                 : 'bg-red-900/90 border-red-500 text-red-100'
               }`}
             >
-              <span>{notification.msg}</span>
+              <span className="font-bold font-serif tracking-wide">{notification.msg}</span>
               <button onClick={() => setNotification(null)}><X className="w-4 h-4 opacity-70 hover:opacity-100" /></button>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="max-w-6xl mx-auto mt-4 md:mt-0 pb-20 md:pb-0">
+        <div className="max-w-7xl mx-auto mt-4 md:mt-0 pb-20 md:pb-0 h-full">
           {currentView === View.DASHBOARD && <Dashboard character={character} onUpdateGold={handleUpdateGold} onUpdateName={handleUpdateName} onUpdateHouse={handleUpdateHouse} onUpdateAvatar={handleUpdateAvatar} />}
           {currentView === View.SHOP && <Shop character={character} onBuy={handleBuy} onUpdateItemImage={handleUpdateItemImage} />}
           {currentView === View.INVENTORY && <Inventory character={character} onEquip={handleEquip} onUnequip={handleUnequip} onSell={handleSell} />}
           {currentView === View.DUEL && <DuelingClub character={character} onBattleComplete={handleBattleComplete} />}
+          {currentView === View.QUIZ && <QuizRoom character={character} onComplete={handleQuizComplete} />}
+          {currentView === View.POTIONS && <PotionsClass character={character} onBuyIngredient={handleBuyIngredient} onBrewPotion={handleBrewPotion} />}
         </div>
       </main>
     </div>

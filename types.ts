@@ -21,6 +21,24 @@ export interface BattleResult {
   date: string;
 }
 
+export interface Ingredient {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+}
+
+export interface Potion {
+  id: string;
+  name: string;
+  description: string;
+  sellPrice: number;
+  image: string;
+  ingredients: string[]; // IDs of required ingredients
+  difficulty: number; // 0-100, chance of failure
+}
+
 export interface Character {
   name: string;
   house: 'Gryffindor' | 'Slytherin' | 'Ravenclaw' | 'Hufflepuff';
@@ -37,13 +55,18 @@ export interface Character {
     losses: number;
   };
   matchHistory: BattleResult[];
+  solvedQuestions: string[]; // List of question strings already answered correctly
+  ingredients: Record<string, number>; // Map of Ingredient ID -> Quantity
+  potions: Record<string, number>; // Map of Potion ID -> Quantity
 }
 
 export enum View {
   DASHBOARD = 'DASHBOARD',
   SHOP = 'SHOP',
   INVENTORY = 'INVENTORY',
-  DUEL = 'DUEL'
+  DUEL = 'DUEL',
+  QUIZ = 'QUIZ',
+  POTIONS = 'POTIONS'
 }
 
 export interface HouseTheme {
@@ -54,4 +77,10 @@ export interface HouseTheme {
   border: string; // Border color (e.g., border-red-500/50)
   gradient: string; // BG Gradient
   button: string; // Button class
+}
+
+export interface TriviaQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: number; // Index of correct option
 }

@@ -1,42 +1,42 @@
 
-import { GameItem, Character, HouseTheme } from './types';
+import { GameItem, Character, HouseTheme, TriviaQuestion, Ingredient, Potion } from './types';
 
 export const HOUSE_THEMES: Record<string, HouseTheme> = {
   Gryffindor: {
     id: 'Gryffindor',
     primary: 'text-red-500',
     secondary: 'text-yellow-500',
-    accentBg: 'bg-red-900/20',
-    border: 'border-red-600/40',
-    gradient: 'from-red-900/40 via-orange-900/40 to-slate-900',
-    button: 'bg-red-700 hover:bg-red-600 text-white'
+    accentBg: 'bg-red-950/40',
+    border: 'border-red-800',
+    gradient: 'from-red-950 via-orange-950/40 to-slate-950',
+    button: 'bg-red-900/80 hover:bg-red-800 text-yellow-100 border border-red-700'
   },
   Slytherin: {
     id: 'Slytherin',
-    primary: 'text-emerald-500',
+    primary: 'text-emerald-400',
     secondary: 'text-slate-300',
-    accentBg: 'bg-emerald-900/20',
-    border: 'border-emerald-600/40',
-    gradient: 'from-emerald-900/40 via-slate-900/40 to-black',
-    button: 'bg-emerald-800 hover:bg-emerald-700 text-white'
+    accentBg: 'bg-emerald-950/40',
+    border: 'border-emerald-800',
+    gradient: 'from-emerald-950 via-slate-950/40 to-black',
+    button: 'bg-emerald-900/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-700'
   },
   Ravenclaw: {
     id: 'Ravenclaw',
     primary: 'text-blue-400',
     secondary: 'text-sky-200',
-    accentBg: 'bg-blue-900/20',
-    border: 'border-blue-500/40',
-    gradient: 'from-blue-900/40 via-indigo-900/40 to-slate-900',
-    button: 'bg-blue-700 hover:bg-blue-600 text-white'
+    accentBg: 'bg-blue-950/40',
+    border: 'border-blue-800',
+    gradient: 'from-blue-950 via-indigo-950/40 to-slate-950',
+    button: 'bg-blue-900/80 hover:bg-blue-800 text-blue-100 border border-blue-700'
   },
   Hufflepuff: {
     id: 'Hufflepuff',
     primary: 'text-yellow-400',
-    secondary: 'text-neutral-200',
-    accentBg: 'bg-yellow-900/20',
-    border: 'border-yellow-600/40',
-    gradient: 'from-yellow-900/40 via-amber-900/40 to-slate-900',
-    button: 'bg-yellow-700 hover:bg-yellow-600 text-white'
+    secondary: 'text-amber-200',
+    accentBg: 'bg-yellow-950/40',
+    border: 'border-yellow-800',
+    gradient: 'from-yellow-950 via-amber-950/40 to-slate-950',
+    button: 'bg-yellow-900/80 hover:bg-yellow-800 text-yellow-100 border border-yellow-700'
   }
 };
 
@@ -54,8 +54,452 @@ export const INITIAL_CHARACTER: Character = {
     wins: 0,
     losses: 0,
   },
-  matchHistory: []
+  matchHistory: [],
+  solvedQuestions: [],
+  ingredients: {},
+  potions: {}
 };
+
+export const INGREDIENTS_LIST: Ingredient[] = [
+  // Basic Ingredients
+  { id: 'mandrake', name: 'Mandrake Root', price: 50, description: 'Essential for restorative draughts.', image: '🌱' },
+  { id: 'bezoar', name: 'Bezoar', price: 80, description: 'A stone from the stomach of a goat.', image: '🪨' },
+  { id: 'lacewing', name: 'Lacewing Flies', price: 30, description: 'Must be stewed for 21 days.', image: '🪰' },
+  { id: 'peppermint', name: 'Peppermint', price: 5, description: 'Counter-effect to excessive singing.', image: '🍬' },
+  { id: 'ginger', name: 'Ginger Root', price: 8, description: 'Wit-sharpening ingredient.', image: '🫚' },
+  { id: 'porcupine', name: 'Porcupine Quills', price: 10, description: 'Handle with care.', image: '🦔' },
+  { id: 'flobberworm', name: 'Flobberworm Mucus', price: 15, description: 'Thickens potions.', image: '🟢' },
+  { id: 'leech_juice', name: 'Leech Juice', price: 20, description: 'Needed for Polyjuice Potion.', image: '🩸' },
+  { id: 'horklump', name: 'Horklump Juice', price: 25, description: 'Healing properties.', image: '🍄' },
+
+  // Intermediate Ingredients
+  { id: 'valerian', name: 'Valerian Sprigs', price: 40, description: 'Sedative properties.', image: '🌱' },
+  { id: 'knotgrass', name: 'Knotgrass', price: 45, description: 'Ties knots in everything.', image: '🌾' },
+  { id: 'shrivelfig', name: 'Shrivelfig', price: 55, description: 'Decanted for shrinking potions.', image: '🟣' },
+  { id: 'fluxweed', name: 'Fluxweed', price: 60, description: 'Must be picked at full moon.', image: '🌑' },
+  { id: 'wormwood', name: 'Infusion of Wormwood', price: 70, description: 'A very bitter herb.', image: '🌿' },
+  { id: 'asphodel', name: 'Powdered Asphodel', price: 90, description: 'Key ingredient for sleeping potions.', image: '🌼' },
+  { id: 'moonstone', name: 'Moonstone', price: 100, description: 'Used in love potions and draughts of peace.', image: '💎' },
+  { id: 'dittany', name: 'Dittany', price: 100, description: 'Powerful healing herb.', image: '🍃' },
+
+  // Rare Ingredients
+  { id: 'unicorn_hair', name: 'Unicorn Hair', price: 120, description: 'Gathered from the Forbidden Forest.', image: '🦄' },
+  { id: 'wolfsbane_plant', name: 'Wolfsbane', price: 130, description: 'Also known as aconite or monkshood.', image: '🐺' },
+  { id: 'dragon_liver', name: 'Dragon Liver', price: 150, description: 'Highly potent and volatile.', image: '🐉' },
+  { id: 'sopophorous', name: 'Sopophorous Bean', price: 180, description: 'Juice is extracted by crushing, not cutting.', image: '🫘' },
+  { id: 'boomslang', name: 'Boomslang Skin', price: 200, description: 'Shredded skin of a poisonous snake.', image: '🐍' },
+  { id: 'horn_of_bicorn', name: 'Horn of Bicorn', price: 250, description: 'Extremely rare ingredient.', image: '🦄' },
+  { id: 'ashwinder', name: 'Ashwinder Egg', price: 300, description: 'Frozen immediately to prevent combustion.', image: '🥚' }
+];
+
+export const POTION_RECIPES: Potion[] = [
+  // Basic Potions
+  { 
+    id: 'cure_boils', 
+    name: 'Cure for Boils', 
+    description: 'A simple potion to cure boils. Watch the heat!', 
+    sellPrice: 150, 
+    image: '⚗️',
+    ingredients: ['mandrake', 'bezoar'],
+    difficulty: 10
+  },
+  { 
+    id: 'pepperup', 
+    name: 'Pepperup Potion', 
+    description: 'Cures the common cold. Steam from ears side-effect.', 
+    sellPrice: 400, 
+    image: '😤',
+    ingredients: ['horn_of_bicorn', 'mandrake', 'ginger'],
+    difficulty: 30
+  },
+  { 
+    id: 'confusing', 
+    name: 'Confusing Concoction', 
+    description: 'Causes confusion and recklessness.', 
+    sellPrice: 350, 
+    image: '😵',
+    ingredients: ['leech_juice', 'horklump'],
+    difficulty: 35
+  },
+  { 
+    id: 'essence_dittany', 
+    name: 'Essence of Dittany', 
+    description: 'Powerful healing agent for wounds.', 
+    sellPrice: 500, 
+    image: '🩹',
+    ingredients: ['dittany', 'leech_juice'],
+    difficulty: 45
+  },
+  
+  // Intermediate Potions
+  { 
+    id: 'forgetfulness', 
+    name: 'Forgetfulness Potion', 
+    description: 'Causes an unknown degree of memory loss.', 
+    sellPrice: 250, 
+    image: '🧪',
+    ingredients: ['mandrake', 'unicorn_hair'],
+    difficulty: 25
+  },
+  { 
+    id: 'sleeping', 
+    name: 'Sleeping Draught', 
+    description: 'Induces immediate, deep sleep.', 
+    sellPrice: 400, 
+    image: '💤',
+    ingredients: ['mandrake', 'lacewing', 'unicorn_hair'],
+    difficulty: 40
+  },
+  { 
+    id: 'ageing', 
+    name: 'Ageing Potion', 
+    description: 'Causes the drinker to age temporarily.', 
+    sellPrice: 600, 
+    image: '👴',
+    ingredients: ['boomslang', 'leech_juice'],
+    difficulty: 50
+  },
+  { 
+    id: 'skele_gro', 
+    name: 'Skele-Gro', 
+    description: 'Regrows bones. Tastes awful.', 
+    sellPrice: 900, 
+    image: '🦴',
+    ingredients: ['flobberworm', 'shrivelfig', 'porcupine'],
+    difficulty: 60
+  },
+  { 
+    id: 'peace', 
+    name: 'Draught of Peace', 
+    description: 'Relieves anxiety and agitation.', 
+    sellPrice: 1000, 
+    image: '😌',
+    ingredients: ['moonstone', 'valerian', 'porcupine'],
+    difficulty: 70
+  },
+
+  // Advanced Potions
+  { 
+    id: 'polyjuice_simple', 
+    name: 'Polyjuice Potion (Weak)', 
+    description: 'Allows the drinker to assume the form of another for a short time.', 
+    sellPrice: 1200, 
+    image: '👥',
+    ingredients: ['lacewing', 'boomslang', 'dragon_liver'],
+    difficulty: 75
+  },
+  { 
+    id: 'polyjuice', 
+    name: 'Polyjuice Potion (Strong)', 
+    description: 'Allows the drinker to assume the form of another.', 
+    sellPrice: 2500, 
+    image: '👥',
+    ingredients: ['lacewing', 'boomslang', 'horn_of_bicorn'],
+    difficulty: 80
+  },
+  { 
+    id: 'draught_living_death', 
+    name: 'Draught of Living Death', 
+    description: 'A sleeping potion so powerful it mimics death.', 
+    sellPrice: 2800, 
+    image: '💀',
+    ingredients: ['asphodel', 'wormwood', 'sopophorous'],
+    difficulty: 85
+  },
+  { 
+    id: 'wolfsbane', 
+    name: 'Wolfsbane Potion', 
+    description: 'Relieves symptoms of lycanthropy. Does not cure.', 
+    sellPrice: 3500, 
+    image: '🌕',
+    ingredients: ['wolfsbane_plant', 'moonstone', 'valerian'],
+    difficulty: 95
+  },
+  { 
+    id: 'veritaserum', 
+    name: 'Veritaserum', 
+    description: 'Forces the drinker to tell the truth.', 
+    sellPrice: 4500, 
+    image: '👁️',
+    ingredients: ['moonstone', 'sopophorous', 'unicorn_hair'],
+    difficulty: 90
+  },
+  { 
+    id: 'amortentia', 
+    name: 'Amortentia', 
+    description: 'The most powerful love potion in the world.', 
+    sellPrice: 2000, 
+    image: '💖',
+    ingredients: ['moonstone', 'ashwinder', 'dragon_liver'],
+    difficulty: 60
+  },
+  { 
+    id: 'felix', 
+    name: 'Felix Felicis', 
+    description: 'Liquid Luck. Very dangerous to brew.', 
+    sellPrice: 5000, 
+    image: '🍀',
+    ingredients: ['ashwinder', 'moonstone', 'dragon_liver', 'unicorn_hair'],
+    difficulty: 95
+  },
+  { 
+    id: 'elixir_life',
+    name: 'Elixir of Life',
+    description: 'Extends life. Requires extremely rare ingredients.',
+    sellPrice: 10000,
+    image: '🏺',
+    ingredients: ['ashwinder', 'sopophorous', 'horn_of_bicorn'],
+    difficulty: 99
+  }
+];
+
+export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
+  {
+    question: "What is the core of the Elder Wand?",
+    options: ["Phoenix Feather", "Dragon Heartstring", "Thestral Tail Hair", "Unicorn Hair"],
+    correctAnswer: 2
+  },
+  {
+    question: "Which Potion is known as 'Liquid Luck'?",
+    options: ["Amortentia", "Polyjuice Potion", "Veritaserum", "Felix Felicis"],
+    correctAnswer: 3
+  },
+  {
+    question: "Who destroyed the Hufflepuff Cup Horcrux?",
+    options: ["Harry Potter", "Ron Weasley", "Hermione Granger", "Neville Longbottom"],
+    correctAnswer: 2
+  },
+  {
+    question: "What represents the number 7 in Arithmancy?",
+    options: ["Leadership", "Magic", "Chaos", "Love"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which dragon breed did Harry face in the Triwizard Tournament?",
+    options: ["Chinese Fireball", "Swedish Short-Snout", "Hungarian Horntail", "Common Welsh Green"],
+    correctAnswer: 2
+  },
+  {
+    question: "What is the max speed of a Firebolt broomstick?",
+    options: ["100 mph", "120 mph", "150 mph", "180 mph"],
+    correctAnswer: 2
+  },
+  {
+    question: "Who was the Half-Blood Prince?",
+    options: ["Tom Riddle", "Sirius Black", "James Potter", "Severus Snape"],
+    correctAnswer: 3
+  },
+  {
+    question: "What is the name of Dumbledore's Phoenix?",
+    options: ["Firenze", "Fawkes", "Fluffy", "Fang"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which spell is used to unlock doors?",
+    options: ["Alohomora", "Dissendium", "Colloportus", "Aberto"],
+    correctAnswer: 0
+  },
+  {
+    question: "Who was the master of the Elder Wand before Dumbledore?",
+    options: ["Voldemort", "Grindelwald", "Gregorovich", "Peverell"],
+    correctAnswer: 1
+  },
+  {
+    question: "What form does Hermione's Patronus take?",
+    options: ["Otter", "Jack Russell Terrier", "Stag", "Doe"],
+    correctAnswer: 0
+  },
+  {
+    question: "What is the name of Hagrid's three-headed dog?",
+    options: ["Norbert", "Fang", "Fluffy", "Aragog"],
+    correctAnswer: 2
+  },
+  {
+    question: "Which Weasley brother died in the Battle of Hogwarts?",
+    options: ["Bill", "Percy", "George", "Fred"],
+    correctAnswer: 3
+  },
+  {
+    question: "What is the incantation for the Killing Curse?",
+    options: ["Crucio", "Imperio", "Sectumsempra", "Avada Kedavra"],
+    correctAnswer: 3
+  },
+  {
+    question: "Who poses as Mad-Eye Moody in The Goblet of Fire?",
+    options: ["Barty Crouch Sr.", "Barty Crouch Jr.", "Peter Pettigrew", "Igor Karkaroff"],
+    correctAnswer: 1
+  },
+  {
+    question: "What magical object allows you to view memories?",
+    options: ["Remembrall", "Pensieve", "Mirror of Erised", "Foe-Glass"],
+    correctAnswer: 1
+  },
+  {
+    question: "Who is the Grey Lady of Ravenclaw?",
+    options: ["Rowena Ravenclaw", "Helena Ravenclaw", "The Fat Lady", "Moaning Myrtle"],
+    correctAnswer: 1
+  },
+  {
+    question: "What creates a Horcrux?",
+    options: ["A complex spell", "Murder", "A potion", "Sacrifice"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which ear did George Weasley lose?",
+    options: ["Left", "Right", "Both", "None"],
+    correctAnswer: 0
+  },
+  {
+    question: "What is the password to the Prefect's Bathroom in Goblet of Fire?",
+    options: ["Pine Fresh", "Lemon Drop", "Caput Draconis", "Mimbulus Mimbletonia"],
+    correctAnswer: 0
+  },
+  {
+    question: "Who wrote 'A History of Magic'?",
+    options: ["Adalbert Waffling", "Emeric Switch", "Bathilda Bagshot", "Miranda Goshawk"],
+    correctAnswer: 2
+  },
+  {
+    question: "What is the name of the Lovegood's house?",
+    options: ["The Burrow", "The Rookery", "Shell Cottage", "Grimmauld Place"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which vault was the Philosopher's Stone kept in?",
+    options: ["711", "712", "713", "714"],
+    correctAnswer: 2
+  },
+  {
+    question: "What is the name of the Poltergeist at Hogwarts?",
+    options: ["Nearly Headless Nick", "The Bloody Baron", "Peeves", "Binns"],
+    correctAnswer: 2
+  },
+  {
+    question: "How many goal posts are there on a Quidditch pitch?",
+    options: ["2", "4", "6", "8"],
+    correctAnswer: 2
+  },
+  {
+    question: "What wood is Harry Potter's wand made of?",
+    options: ["Yew", "Holly", "Vine", "Hawthorn"],
+    correctAnswer: 1
+  },
+  {
+    question: "Who is the editor of The Quibbler?",
+    options: ["Rita Skeeter", "Barnabas Cuffe", "Xenophilius Lovegood", "Bathilda Bagshot"],
+    correctAnswer: 2
+  },
+  {
+    question: "What is the effect of the spell 'Langlock'?",
+    options: ["Locks a door", "Glues tongue to roof of mouth", "Freezes legs", "Silences sound"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which team won the Quidditch World Cup in 1994?",
+    options: ["Bulgaria", "England", "Ireland", "Peru"],
+    correctAnswer: 2
+  },
+  {
+    question: "What does O.W.L. stand for?",
+    options: ["Official Wizarding Level", "Ordinary Wizarding Level", "Outstanding Wizarding License", "Optional Wizarding Learning"],
+    correctAnswer: 1
+  },
+  {
+    question: "Who gave Harry the Marauder's Map?",
+    options: ["Sirius Black", "Remus Lupin", "Fred and George Weasley", "James Potter"],
+    correctAnswer: 2
+  },
+  {
+    question: "What is the name of the Hogwarts caretaker's cat?",
+    options: ["Crookshanks", "Mrs. Norris", "Tibbles", "Snowy"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which Potion grants the drinker a form of shape-shifting?",
+    options: ["Polyjuice Potion", "Veritaserum", "Wolfsbane Potion", "Amortentia"],
+    correctAnswer: 0
+  },
+  {
+    question: "What color is the spell 'Expelliarmus'?",
+    options: ["Green", "Blue", "Red", "Yellow"],
+    correctAnswer: 2
+  },
+  {
+    question: "Who killed Bellatrix Lestrange?",
+    options: ["Harry Potter", "Neville Longbottom", "Ginny Weasley", "Molly Weasley"],
+    correctAnswer: 3
+  },
+  {
+    question: "What is the street address of the Dursleys?",
+    options: ["4 Privet Drive", "12 Grimmauld Place", "Spinner's End", "Godric's Hollow"],
+    correctAnswer: 0
+  },
+  {
+    question: "What does the spell 'Morsmordre' conjure?",
+    options: ["The Dark Mark", "A Patronus", "Fiendfyre", "A Shield"],
+    correctAnswer: 0
+  },
+  {
+    question: "Who was the original owner of the Sorting Hat?",
+    options: ["Salazar Slytherin", "Rowena Ravenclaw", "Helga Hufflepuff", "Godric Gryffindor"],
+    correctAnswer: 3
+  },
+  {
+    question: "What is the name of Voldemort's grandfather?",
+    options: ["Tom Riddle Sr.", "Marvolo Gaunt", "Morfin Gaunt", "Salazar Slytherin"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which ingredient is NOT in Polyjuice Potion?",
+    options: ["Lacewing flies", "Leeches", "Fluxweed", "Bubotuber pus"],
+    correctAnswer: 3
+  },
+  {
+    question: "Who replaced the Fat Lady in Prisoner of Azkaban?",
+    options: ["The Bloody Baron", "Sir Cadogan", "Violet", "The Grey Lady"],
+    correctAnswer: 1
+  },
+  {
+    question: "What year was the Battle of Hogwarts?",
+    options: ["1996", "1997", "1998", "1999"],
+    correctAnswer: 2
+  },
+  {
+    question: "Which creature pulls the Hogwarts carriages?",
+    options: ["Hippogriffs", "Thestrals", "Abraxans", "Nightmares"],
+    correctAnswer: 1
+  },
+  {
+    question: "What is the answer to the Sphinx's riddle in the maze?",
+    options: ["A Spider", "A Scorpion", "A Sphinx", "A Spy"],
+    correctAnswer: 0
+  },
+  {
+    question: "Who is the Half-Blood Prince's mother?",
+    options: ["Eileen Prince", "Merope Gaunt", "Lily Evans", "Narcissa Black"],
+    correctAnswer: 0
+  },
+  {
+    question: "What is the primary use of a Bezoar?",
+    options: ["Invisibility", "Luck", "Antidote to poison", "Healing wounds"],
+    correctAnswer: 2
+  },
+  {
+    question: "Which row in the Hall of Prophecy contained the prophecy about Harry?",
+    options: ["Row 95", "Row 96", "Row 97", "Row 98"],
+    correctAnswer: 2
+  },
+  {
+    question: "Who was the Headmaster of Hogwarts before Dumbledore?",
+    options: ["Phineas Nigellus Black", "Armando Dippet", "Dilys Derwent", "Dexter Fortescue"],
+    correctAnswer: 1
+  },
+  {
+    question: "What is the name of the village where the Riddle family lived?",
+    options: ["Little Hangleton", "Little Whinging", "Godric's Hollow", "Ottery St. Catchpole"],
+    correctAnswer: 0
+  }
+];
 
 export const SHOP_ITEMS: GameItem[] = [
   // --- HERO WANDS ---
