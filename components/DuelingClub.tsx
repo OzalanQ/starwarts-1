@@ -39,8 +39,19 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
     addLog("Entry fee paid.");
     
     // Battle Logic Setup
-    const totalAttack = character.stats.attack + character.equipped.reduce((acc, item) => acc + (item.attack || 0), 0);
-    const totalDefense = character.stats.defense + character.equipped.reduce((acc, item) => acc + (item.defense || 0), 0);
+    // 1. Base Equip Stats
+    let totalAttack = character.stats.attack + character.equipped.reduce((acc, item) => acc + (item.attack || 0), 0);
+    let totalDefense = character.stats.defense + character.equipped.reduce((acc, item) => acc + (item.defense || 0), 0);
+    
+    // 2. Creature Bonuses
+    character.creatures.forEach(c => {
+        if (c.happiness > 50 && c.hunger > 30) {
+            if (c.bonusType === 'ATTACK_BOOST') totalAttack += c.bonusValue;
+            if (c.bonusType === 'DEFENSE_BOOST') totalDefense += c.bonusValue;
+        }
+    });
+
+    // Simulation Logic
     const isVictory = Math.random() < 0.40;
     const oppAttack = isVictory ? totalDefense * 0.8 : totalDefense * 1.5; 
 

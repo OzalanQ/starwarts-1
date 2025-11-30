@@ -249,32 +249,34 @@ export const Dashboard: React.FC<DashboardProps> = ({ character, onUpdateGold, o
       >
         <div className={`absolute inset-0 bg-gradient-to-r ${theme.gradient} opacity-20 pointer-events-none`} />
         
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
-            <div className="flex items-center gap-6">
+        <div className="flex flex-col items-start gap-6 relative z-10 w-full">
+            <div className="flex items-center gap-6 mb-4">
                 <div className={`p-4 rounded-full ${theme.accentBg} border-2 ${theme.border} shadow-[0_0_15px_rgba(0,0,0,0.3)]`}>
                     <Home className={`w-8 h-8 ${theme.primary}`} />
                 </div>
                 <div>
-                    <h3 className={`text-2xl font-magic ${theme.secondary}`}>House {character.house}</h3>
-                    <p className="text-slate-400 font-serif italic">Loyalty • Ambition • Wisdom • Bravery</p>
+                    <h3 className={`text-2xl font-magic ${theme.secondary}`}>House Allegiance</h3>
+                    <p className="text-slate-400 font-serif italic">Choose wisely, for the hat makes no mistakes.</p>
                 </div>
             </div>
             
-            <div className="relative group z-20">
-                <button className={`flex items-center gap-2 ${theme.button} px-6 py-3 rounded-lg font-bold font-magic tracking-wide transition-all shadow-lg hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]`}>
-                    Change Allegiance <ChevronDown className="w-4 h-4" />
-                </button>
-                <div className="absolute right-0 top-full mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all overflow-hidden z-50">
-                    {Object.keys(HOUSE_THEMES).map(h => (
-                        <button 
-                            key={h}
-                            onClick={() => initiateHouseChange(h)}
-                            className={`block w-full text-left px-6 py-4 hover:bg-slate-800 ${character.house === h ? theme.primary : 'text-slate-400'} border-b border-slate-800 last:border-0 font-serif transition-colors`}
-                        >
-                            {h}
-                        </button>
-                    ))}
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+                {Object.entries(HOUSE_THEMES).map(([name, houseTheme]) => (
+                    <button 
+                        key={name}
+                        onClick={() => initiateHouseChange(name)}
+                        className={`
+                            relative overflow-hidden p-4 rounded-lg border-2 transition-all duration-300 group
+                            ${character.house === name 
+                                ? `${houseTheme.border} bg-slate-800 ring-2 ring-offset-2 ring-offset-slate-900 ${houseTheme.primary}` 
+                                : 'border-slate-700 bg-slate-900/50 hover:bg-slate-800 hover:border-slate-500 text-slate-400'}
+                        `}
+                    >
+                        <div className={`absolute inset-0 bg-gradient-to-br ${houseTheme.gradient} opacity-0 group-hover:opacity-20 transition-opacity`} />
+                        <span className="font-magic text-lg tracking-wider relative z-10">{name}</span>
+                        {character.house === name && <Check className="absolute top-2 right-2 w-4 h-4 opacity-50" />}
+                    </button>
+                ))}
             </div>
         </div>
       </motion.div>

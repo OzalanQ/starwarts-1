@@ -26,6 +26,15 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy, onUpdateItemImage 
     { id: 'equipment', label: 'Magical Equipment', icon: Book },
   ];
 
+  // Calculate Discount
+  let discount = 0;
+  character.creatures.forEach(c => {
+      if (c.bonusType === 'DISCOUNT' && c.happiness > 50 && c.hunger > 30) {
+          discount += c.bonusValue;
+      }
+  });
+  if (discount > 0.5) discount = 0.5; // Cap at 50%
+
   const handleImageUploadClick = (itemId: number) => {
     setEditingItemId(itemId);
     fileInputRef.current?.click();
@@ -63,6 +72,11 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy, onUpdateItemImage 
         <div>
           <h2 className={`text-3xl font-magic ${theme.secondary}`}>Diagon Alley Market</h2>
           <p className="text-slate-400">Purveyors of fine magical instruments.</p>
+          {discount > 0 && (
+              <p className="text-green-400 text-sm mt-1 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> Menagerie Discount Active: -{Math.round(discount * 100)}%
+              </p>
+          )}
         </div>
         <div className={`flex items-center gap-2 mt-4 md:mt-0 ${theme.accentBg} px-4 py-2 rounded-full border ${theme.border}`}>
           <Coins className={`w-5 h-5 ${theme.secondary}`} />
@@ -93,7 +107,8 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy, onUpdateItemImage 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredItems.map((item) => {
           const isOwned = character.inventory.some(i => i.id === item.id) || character.equipped.some(i => i.id === item.id);
-          const canAfford = character.gold >= item.price;
+          const finalPrice = Math.floor(item.price * (1 - discount));
+          const canAfford = character.gold >= finalPrice;
           const displayImage = character.customItemImages[item.id] || item.imageUrl;
           
           return (
@@ -163,13 +178,13 @@ export const Shop: React.FC<ShopProps> = ({ character, onBuy, onUpdateItemImage 
                         <>
                             <Check className="w-4 h-4" /> Owned
                         </>
-                    ) : canAfford ? (
-                        <>
-                            <ShoppingBag className="w-4 h-4" /> {item.price} G
-                        </>
                     ) : (
                         <>
-                            <Lock className="w-4 h-4" /> {item.price} G
+                            {canAfford ? <ShoppingBag className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                            <div className="flex flex-col items-start leading-none">
+                                {discount > 0 && <span className="text-[9px] line-through text-slate-500">{item.price}G</span>}
+                                <span>{finalPrice} G</span>
+                            </div>
                         </>
                     )}
                   </button>

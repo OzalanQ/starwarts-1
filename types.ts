@@ -39,6 +39,47 @@ export interface Potion {
   difficulty: number; // 0-100, chance of failure
 }
 
+export interface CreatureDefinition {
+  id: string;
+  species: string;
+  name: string; 
+  description: string;
+  price: number;
+  image: string;
+  bonusType: 'GOLD_FINDER' | 'DISCOUNT' | 'ATTACK_BOOST' | 'DEFENSE_BOOST';
+  bonusValue: number; 
+}
+
+export interface OwnedCreature extends CreatureDefinition {
+  instanceId: string; 
+  happiness: number; // 0-100
+  hunger: number; // 0-100 (100 is full)
+  lastInteraction: number; 
+}
+
+export interface Stock {
+  id: string;
+  ticker: string;
+  name: string;
+  description: string;
+  basePrice: number;
+  volatility: number; // 0.0 to 1.0
+}
+
+export interface PortfolioItem {
+  shares: number;
+  totalCost: number; // Total spent on these shares (for avg calculation)
+}
+
+export interface VaultUpgrade {
+  level: number;
+  name: string;
+  cost: number;
+  capacity: number; // Flavor text mostly, or could be a cap
+  image: string;
+  description: string;
+}
+
 export interface Character {
   name: string;
   house: 'Gryffindor' | 'Slytherin' | 'Ravenclaw' | 'Hufflepuff';
@@ -58,6 +99,12 @@ export interface Character {
   solvedQuestions: string[]; // List of question strings already answered correctly
   ingredients: Record<string, number>; // Map of Ingredient ID -> Quantity
   potions: Record<string, number>; // Map of Potion ID -> Quantity
+  creatures: OwnedCreature[];
+  
+  // Bank & Investments
+  vaultLevel: number;
+  portfolio: Record<string, PortfolioItem>;
+  marketPrices: Record<string, number>;
 }
 
 export enum View {
@@ -66,7 +113,9 @@ export enum View {
   INVENTORY = 'INVENTORY',
   DUEL = 'DUEL',
   QUIZ = 'QUIZ',
-  POTIONS = 'POTIONS'
+  POTIONS = 'POTIONS',
+  CREATURES = 'CREATURES',
+  BANK = 'BANK'
 }
 
 export interface HouseTheme {
