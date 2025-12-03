@@ -2,16 +2,17 @@
 import React, { useState } from 'react';
 import { Character, Ingredient, Potion } from '../types';
 import { INGREDIENTS_LIST, POTION_RECIPES, HOUSE_THEMES } from '../constants';
-import { FlaskConical, Plus, ShoppingCart, AlertTriangle, Check, X, Flame, Sparkles } from 'lucide-react';
+import { FlaskConical, Plus, ShoppingCart, AlertTriangle, Check, X, Flame, Sparkles, Coins } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface PotionsClassProps {
   character: Character;
   onBuyIngredient: (ingredient: Ingredient, cost: number) => void;
   onBrewPotion: (potion: Potion, success: boolean) => void;
+  onSellPotion: (potion: Potion) => void;
 }
 
-export const PotionsClass: React.FC<PotionsClassProps> = ({ character, onBuyIngredient, onBrewPotion }) => {
+export const PotionsClass: React.FC<PotionsClassProps> = ({ character, onBuyIngredient, onBrewPotion, onSellPotion }) => {
   const theme = HOUSE_THEMES[character.house] || HOUSE_THEMES.Gryffindor;
   const [activeTab, setActiveTab] = useState<'ingredients' | 'cauldron'>('ingredients');
   const [selectedPotion, setSelectedPotion] = useState<Potion | null>(null);
@@ -31,12 +32,6 @@ export const PotionsClass: React.FC<PotionsClassProps> = ({ character, onBuyIngr
     setTimeout(() => {
       setIsBrewing(false);
       const success = Math.random() * 100 > selectedPotion.difficulty; // Difficulty is chance of failure
-      
-      // Actually, let's make difficulty = chance of failure. So higher difficulty = harder.
-      // Success if roll > difficulty? No, usually roll < success_rate.
-      // Let's stick to: Difficulty is 0-100. Success if Math.random()*100 > difficulty.
-      // E.g. Difficulty 10 (Cure Boils). Roll 50 > 10 -> Success.
-      // E.g. Difficulty 90 (Felix). Roll 50 > 90 -> Fail.
       
       setBrewResult(success ? 'success' : 'failure');
       onBrewPotion(selectedPotion, success);
@@ -205,11 +200,20 @@ export const PotionsClass: React.FC<PotionsClassProps> = ({ character, onBuyIngr
                 const quantity = qty as number;
                 if (quantity <= 0) return null;
                 const pot = POTION_RECIPES.find(p => p.id === id);
+                if (!pot) return null;
                 return (
-                    <div key={id} className="flex-shrink-0 bg-slate-800 p-3 rounded border border-slate-700 w-32 text-center relative">
-                        <div className="text-2xl mb-1">{pot?.image}</div>
-                        <div className="text-xs font-bold text-white truncate">{pot?.name}</div>
-                        <div className="absolute top-1 right-1 bg-slate-900 text-[10px] px-1.5 rounded text-slate-300 font-mono">x{quantity}</div>
+                    <div key={id} className="flex-shrink-0 bg-slate-800 p-3 rounded-xl border border-slate-700 w-36 text-center relative group hover:border-slate-500 transition-colors">
+                        <div className="text-3xl mb-2 drop-shadow-lg">{pot.image}</div>
+                        <div className="text-xs font-bold text-white truncate mb-1">{pot.name}</div>
+                        <div className="absolute top-2 right-2 bg-slate-900 text-[10px] px-1.5 py-0.5 rounded text-slate-300 font-mono border border-slate-700">x{quantity}</div>
+                        
+                        <button 
+                            onClick={() => onSellPotion(pot)}
+                            className="w-full mt-2 bg-slate-900/50 hover:bg-yellow-900/50 border border-slate-700 hover:border-yellow-700 text-slate-400 hover:text-yellow-400 text-[10px] py-1.5 rounded transition-all flex items-center justify-center gap-1.5 group/btn"
+                        >
+                            <Coins className="w-3 h-3 group-hover/btn:text-yellow-400" />
+                            Sell {pot.sellPrice}G
+                        </button>
                     </div>
                 );
             })}

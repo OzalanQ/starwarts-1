@@ -278,6 +278,21 @@ const App: React.FC = () => {
     }
   };
 
+  const handleSellPotion = (potion: Potion) => {
+    setCharacter(prev => {
+      const current = prev.potions[potion.id] || 0;
+      if (current <= 0) return prev;
+      const newPotions = { ...prev.potions };
+      newPotions[potion.id] = current - 1;
+      return {
+        ...prev,
+        gold: prev.gold + potion.sellPrice,
+        potions: newPotions
+      };
+    });
+    showNotification(`Sold ${potion.name} for ${potion.sellPrice}G`);
+  };
+
   const handleBuyCreature = (creature: CreatureDefinition) => {
       if (character.gold < creature.price) {
           showNotification("Insufficient funds.", 'error');
@@ -449,7 +464,7 @@ const App: React.FC = () => {
           {currentView === View.INVENTORY && <Inventory character={character} onEquip={handleEquip} onUnequip={handleUnequip} onSell={handleSell} />}
           {currentView === View.DUEL && <DuelingClub character={character} onBattleComplete={handleBattleComplete} />}
           {currentView === View.QUIZ && <QuizRoom character={character} onComplete={handleQuizComplete} />}
-          {currentView === View.POTIONS && <PotionsClass character={character} onBuyIngredient={handleBuyIngredient} onBrewPotion={handleBrewPotion} />}
+          {currentView === View.POTIONS && <PotionsClass character={character} onBuyIngredient={handleBuyIngredient} onBrewPotion={handleBrewPotion} onSellPotion={handleSellPotion} />}
           {currentView === View.CREATURES && <MagicalMenagerie character={character} onBuyCreature={handleBuyCreature} onFeedCreature={handleFeedCreature} onPlayCreature={handlePlayCreature} />}
           {currentView === View.BANK && <GringottsBank character={character} onBuyStock={handleBuyStock} onSellStock={handleSellStock} onUpgradeVault={handleUpgradeVault} />}
         </div>

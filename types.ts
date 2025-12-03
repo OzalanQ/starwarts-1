@@ -80,6 +80,32 @@ export interface VaultUpgrade {
   description: string;
 }
 
+// Wand Crafting Interfaces
+export interface WandWood {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+  attackBonus: number;
+  color: string; // Hex code or CSS color
+}
+
+export interface WandCore {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+  defenseBonus: number;
+  image: string; // Emoji or Icon
+}
+
+export interface WandColor {
+  id: string;
+  name: string;
+  hex: string;
+  cost: number;
+}
+
 export interface Character {
   name: string;
   house: 'Gryffindor' | 'Slytherin' | 'Ravenclaw' | 'Hufflepuff';
@@ -115,7 +141,8 @@ export enum View {
   QUIZ = 'QUIZ',
   POTIONS = 'POTIONS',
   CREATURES = 'CREATURES',
-  BANK = 'BANK'
+  BANK = 'BANK',
+  WAND_WORKSHOP = 'WAND_WORKSHOP'
 }
 
 export interface HouseTheme {
