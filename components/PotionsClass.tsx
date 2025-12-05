@@ -151,24 +151,43 @@ export const PotionsClass: React.FC<PotionsClassProps> = ({ character, onBuyIngr
                                 })}
                             </div>
 
-                            <div className="h-16 w-full relative z-10 flex justify-center">
+                            <div className="min-h-[6rem] w-full relative z-10 flex justify-center items-center mt-6">
                                 {isBrewing ? (
                                     <div className="flex flex-col items-center text-purple-400 animate-pulse">
-                                        <Flame className="w-8 h-8 mb-2" />
-                                        <span className="font-magic tracking-widest">Brewing...</span>
+                                        <Flame className="w-10 h-10 mb-2" />
+                                        <span className="font-magic tracking-widest text-lg">Brewing...</span>
                                     </div>
                                 ) : brewResult ? (
-                                    <div className={`flex flex-col items-center ${brewResult === 'success' ? 'text-green-400' : 'text-red-400'}`}>
-                                        {brewResult === 'success' ? <Sparkles className="w-8 h-8 mb-2" /> : <AlertTriangle className="w-8 h-8 mb-2" />}
-                                        <span className="font-magic text-xl">{brewResult === 'success' ? 'Success!' : 'Failed!'}</span>
-                                        <span className="text-xs text-slate-400 mt-1">{brewResult === 'success' ? `Added to Inventory` : `Ingredients Wasted`}</span>
-                                    </div>
+                                    <motion.div 
+                                        initial={{ scale: 0.9, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        className={`flex flex-col items-center p-4 rounded-xl border backdrop-blur-md w-full max-w-sm ${
+                                            brewResult === 'success' 
+                                            ? 'bg-green-950/40 border-green-500/50 text-green-400 shadow-[0_0_30px_rgba(74,222,128,0.15)]' 
+                                            : 'bg-red-950/40 border-red-500/50 text-red-400 shadow-[0_0_30px_rgba(248,113,113,0.15)]'
+                                        }`}
+                                    >
+                                        <div className="flex items-center gap-2 mb-1">
+                                            {brewResult === 'success' ? <Sparkles className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
+                                            <span className="font-magic text-2xl font-bold tracking-wide">{brewResult === 'success' ? 'Success!' : 'Failed!'}</span>
+                                        </div>
+                                        <span className="text-sm text-slate-300 font-serif text-center">
+                                            {brewResult === 'success' ? `You brewed ${selectedPotion.name}!` : `The potion exploded. Ingredients lost.`}
+                                        </span>
+                                        
+                                        <button 
+                                            onClick={() => setBrewResult(null)}
+                                            className="mt-3 px-4 py-1 text-xs font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 rounded transition-colors border border-white/10"
+                                        >
+                                            Brew Again
+                                        </button>
+                                    </motion.div>
                                 ) : (
                                     <button
                                         onClick={handleBrew}
                                         disabled={!canBrew(selectedPotion)}
                                         className={`
-                                            px-8 py-3 rounded-full font-magic text-lg transition-all shadow-lg flex items-center gap-2
+                                            px-8 py-3 rounded-full font-magic text-lg transition-all shadow-lg flex items-center gap-2 transform hover:scale-105 active:scale-95
                                             ${canBrew(selectedPotion) 
                                                 ? 'bg-purple-600 hover:bg-purple-500 text-white hover:shadow-purple-500/20' 
                                                 : 'bg-slate-700 text-slate-500 cursor-not-allowed'}
