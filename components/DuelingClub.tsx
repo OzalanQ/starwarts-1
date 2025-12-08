@@ -209,24 +209,41 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
                     <AnimatePresence>
                         {projectile === 'player' && (
                             <motion.div
-                                initial={{ left: '20%', opacity: 0 }}
-                                animate={{ left: '80%', opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5, ease: "linear" }}
+                                initial={{ left: '25%', opacity: 0, scale: 0.5 }}
+                                animate={{ left: '75%', opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.5, filter: 'blur(10px)' }}
+                                transition={{ duration: 0.6, ease: "anticipate" }} // Slower, punchier
                                 className="absolute top-1/2 -translate-y-1/2 z-20"
                             >
-                                <div className={`w-8 h-8 rounded-full bg-blue-400 blur-md shadow-[0_0_20px_#60a5fa]`} />
+                                <div className="relative">
+                                    {/* Core Bolt */}
+                                    <div className="w-12 h-3 rounded-full bg-cyan-300 shadow-[0_0_20px_#22d3ee] animate-pulse"></div>
+                                    {/* Trail */}
+                                    <div className="absolute top-0 left-0 w-20 h-3 bg-gradient-to-r from-cyan-500/0 to-cyan-400/50 rounded-full blur-sm transform -translate-x-full"></div>
+                                    {/* Sparkles */}
+                                    <div className="absolute -top-2 -left-2 w-full h-full animate-ping opacity-75">
+                                        <Sparkles className="w-8 h-8 text-white" />
+                                    </div>
+                                </div>
                             </motion.div>
                         )}
                          {projectile === 'opponent' && (
                             <motion.div
-                                initial={{ right: '20%', opacity: 0 }}
-                                animate={{ right: '80%', opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5, ease: "linear" }}
+                                initial={{ right: '25%', opacity: 0, scale: 0.5 }}
+                                animate={{ right: '75%', opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.5, filter: 'blur(10px)' }}
+                                transition={{ duration: 0.6, ease: "anticipate" }}
                                 className="absolute top-1/2 -translate-y-1/2 z-20"
                             >
-                                <div className={`w-8 h-8 rounded-full bg-green-500 blur-md shadow-[0_0_20px_#4ade80]`} />
+                                <div className="relative">
+                                     {/* Core Bolt */}
+                                     <div className="w-12 h-3 rounded-full bg-green-500 shadow-[0_0_20px_#22c55e] animate-pulse"></div>
+                                     {/* Trail */}
+                                     <div className="absolute top-0 right-0 w-20 h-3 bg-gradient-to-l from-green-600/0 to-green-500/50 rounded-full blur-sm transform translate-x-full"></div>
+                                      <div className="absolute -top-2 -left-2 w-full h-full animate-ping opacity-75">
+                                        <Zap className="w-8 h-8 text-green-200" />
+                                    </div>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>

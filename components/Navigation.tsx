@@ -1,7 +1,8 @@
 
+
 import React from 'react';
 import { View } from '../types';
-import { Sword, ShoppingBag, Backpack, User, BookOpen, FlaskConical, Bird, Landmark } from 'lucide-react';
+import { Sword, ShoppingBag, Backpack, User, BookOpen, FlaskConical, Bird, Landmark, Hammer } from 'lucide-react';
 import { HOUSE_THEMES } from '../constants';
 
 interface NavigationProps {
@@ -17,6 +18,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onNavigate,
     { id: View.DASHBOARD, label: 'Common Room', icon: User },
     { id: View.INVENTORY, label: 'Trunk', icon: Backpack },
     { id: View.SHOP, label: 'Diagon Alley', icon: ShoppingBag },
+    { id: View.WAND_WORKSHOP, label: 'Ollivanders', icon: Hammer },
     { id: View.DUEL, label: 'Dueling Club', icon: Sword },
     { id: View.POTIONS, label: 'Potions', icon: FlaskConical },
     { id: View.CREATURES, label: 'Menagerie', icon: Bird },

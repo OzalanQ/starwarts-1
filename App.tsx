@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Character, GameItem, View, BattleResult, Ingredient, Potion, CreatureDefinition, OwnedCreature, Stock } from './types';
+import { Character, GameItem, View, BattleResult, Ingredient, Potion, CreatureDefinition, OwnedCreature, Stock, WandWood, WandCore, WandColor } from './types';
 import { INITIAL_CHARACTER, STOCK_MARKET_LIST, VAULT_UPGRADES } from './constants';
 import { Navigation } from './components/Navigation';
 import { Dashboard } from './components/Dashboard';
@@ -11,6 +11,7 @@ import { QuizRoom } from './components/QuizRoom';
 import { PotionsClass } from './components/PotionsClass';
 import { MagicalMenagerie } from './components/MagicalMenagerie';
 import { GringottsBank } from './components/GringottsBank';
+import { WandWorkshop } from './components/WandWorkshop';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -24,7 +25,7 @@ const App: React.FC = () => {
 
   // Simulated persistence
   useEffect(() => {
-    const saved = localStorage.getItem('hogwarts_save_v9'); // Version bump for bank
+    const saved = localStorage.getItem('hogwarts_save_v10'); // Version bump for wand crafting
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -47,7 +48,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('hogwarts_save_v9', JSON.stringify(character));
+    localStorage.setItem('hogwarts_save_v10', JSON.stringify(character));
   }, [character]);
 
   // --- GAME LOOP (Passive Income, Creature Decay, Market Fluctuation) ---
@@ -430,6 +431,36 @@ const App: React.FC = () => {
       showNotification(`Vault upgraded to ${upgrade.name}!`);
   };
 
+  // --- WAND CRAFTING HANDLER ---
+  const handleCraftWand = (wood: WandWood, core: WandCore, color: WandColor, customImage?: string) => {
+      const cost = wood.cost + core.cost + color.cost;
+      if (character.gold < cost) {
+          showNotification("Insufficient funds to craft wand.", 'error');
+          return;
+      }
+
+      const newId = Date.now();
+      const newWand: GameItem = {
+          id: newId,
+          name: `${wood.name} Wand with ${core.name}`,
+          description: `A unique wand crafted from ${wood.name} wood, containing a ${core.name} core. Finished in ${color.name}.`,
+          price: Math.floor(cost * 0.7), // Resale value
+          type: 'wand',
+          attack: wood.attackBonus,
+          defense: core.defenseBonus,
+          // If we have a custom image, use it as the sourceURL (or fallback), but we primarily store it in customItemImages
+          imageUrl: customImage || "https://picsum.photos/seed/custom_wand_" + newId + "/200/200" 
+      };
+
+      setCharacter(prev => ({
+          ...prev,
+          gold: prev.gold - cost,
+          inventory: [...prev.inventory, newWand],
+          customItemImages: customImage ? { ...prev.customItemImages, [newId]: customImage } : prev.customItemImages
+      }));
+      showNotification("Wand crafted successfully!");
+  };
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#050510] text-slate-200 font-serif overflow-hidden transition-colors duration-700">
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -467,6 +498,7 @@ const App: React.FC = () => {
           {currentView === View.POTIONS && <PotionsClass character={character} onBuyIngredient={handleBuyIngredient} onBrewPotion={handleBrewPotion} onSellPotion={handleSellPotion} />}
           {currentView === View.CREATURES && <MagicalMenagerie character={character} onBuyCreature={handleBuyCreature} onFeedCreature={handleFeedCreature} onPlayCreature={handlePlayCreature} />}
           {currentView === View.BANK && <GringottsBank character={character} onBuyStock={handleBuyStock} onSellStock={handleSellStock} onUpgradeVault={handleUpgradeVault} />}
+          {currentView === View.WAND_WORKSHOP && <WandWorkshop character={character} onCraftWand={handleCraftWand} />}
         </div>
       </main>
     </div>

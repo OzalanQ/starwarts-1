@@ -161,26 +161,47 @@ export const PotionsClass: React.FC<PotionsClassProps> = ({ character, onBuyIngr
                                     <motion.div 
                                         initial={{ scale: 0.9, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
-                                        className={`flex flex-col items-center p-4 rounded-xl border backdrop-blur-md w-full max-w-sm ${
+                                        className={`flex flex-col items-center p-6 rounded-xl border-2 backdrop-blur-md w-full max-w-sm shadow-2xl relative overflow-hidden ${
                                             brewResult === 'success' 
-                                            ? 'bg-green-950/40 border-green-500/50 text-green-400 shadow-[0_0_30px_rgba(74,222,128,0.15)]' 
-                                            : 'bg-red-950/40 border-red-500/50 text-red-400 shadow-[0_0_30px_rgba(248,113,113,0.15)]'
+                                            ? 'bg-green-950/80 border-green-400 text-green-100' 
+                                            : 'bg-red-950/80 border-red-400 text-red-100'
                                         }`}
                                     >
-                                        <div className="flex items-center gap-2 mb-1">
-                                            {brewResult === 'success' ? <Sparkles className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
-                                            <span className="font-magic text-2xl font-bold tracking-wide">{brewResult === 'success' ? 'Success!' : 'Failed!'}</span>
-                                        </div>
-                                        <span className="text-sm text-slate-300 font-serif text-center">
-                                            {brewResult === 'success' ? `You brewed ${selectedPotion.name}!` : `The potion exploded. Ingredients lost.`}
-                                        </span>
+                                        {/* Background glow effect */}
+                                        <div className={`absolute inset-0 opacity-20 ${brewResult === 'success' ? 'bg-green-400' : 'bg-red-400'} blur-xl`}></div>
                                         
-                                        <button 
-                                            onClick={() => setBrewResult(null)}
-                                            className="mt-3 px-4 py-1 text-xs font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 rounded transition-colors border border-white/10"
-                                        >
-                                            Brew Again
-                                        </button>
+                                        <div className="relative z-10 flex flex-col items-center">
+                                            <div className={`p-3 rounded-full mb-3 ${brewResult === 'success' ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
+                                                {brewResult === 'success' ? <Sparkles className="w-12 h-12 text-green-300" /> : <AlertTriangle className="w-12 h-12 text-red-300" />}
+                                            </div>
+                                            
+                                            <h3 className="font-magic text-3xl font-bold tracking-wide mb-2 drop-shadow-md">
+                                                {brewResult === 'success' ? 'Success!' : 'Brewing Failed!'}
+                                            </h3>
+                                            
+                                            <p className="text-sm font-serif text-center opacity-90 mb-4 leading-relaxed">
+                                                {brewResult === 'success' 
+                                                    ? `You have successfully brewed a batch of ${selectedPotion.name}.` 
+                                                    : `The mixture turned unstable and exploded!`}
+                                            </p>
+
+                                            {brewResult === 'failure' && (
+                                                <div className="bg-red-900/50 px-4 py-2 rounded border border-red-500/30 mb-4 text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-red-200">
+                                                    <Flame className="w-4 h-4" /> Ingredients Lost
+                                                </div>
+                                            )}
+                                            
+                                            <button 
+                                                onClick={() => setBrewResult(null)}
+                                                className={`px-6 py-2 text-sm font-bold uppercase tracking-wider rounded transition-all shadow-lg hover:scale-105 active:scale-95 ${
+                                                    brewResult === 'success'
+                                                    ? 'bg-green-600 hover:bg-green-500 text-white border border-green-400'
+                                                    : 'bg-red-600 hover:bg-red-500 text-white border border-red-400'
+                                                }`}
+                                            >
+                                                {brewResult === 'success' ? 'Collect Potion' : 'Clean Up Mess'}
+                                            </button>
+                                        </div>
                                     </motion.div>
                                 ) : (
                                     <button
