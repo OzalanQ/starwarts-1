@@ -1,5 +1,6 @@
 
 
+
 import { GameItem, Character, HouseTheme, TriviaQuestion, Ingredient, Potion, CreatureDefinition, Stock, VaultUpgrade, WandWood, WandCore, WandColor } from './types';
 
 export const HOUSE_THEMES: Record<string, HouseTheme> = {
@@ -312,8 +313,6 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   // EXISTING
   { question: "What is the core of the Elder Wand?", options: ["Phoenix Feather", "Dragon Heartstring", "Thestral Tail Hair", "Unicorn Hair"], correctAnswer: 2 },
   { question: "Which Potion is known as 'Liquid Luck'?", options: ["Amortentia", "Polyjuice Potion", "Veritaserum", "Felix Felicis"], correctAnswer: 3 },
-  
-  // CHARACTERS & BIOGRAPHY
   { question: "What is Dumbledore's full name?", options: ["Albus Brian Percival Wulfric Dumbledore", "Albus Percival Wulfric Brian Dumbledore", "Albus Wulfric Percival Brian Dumbledore", "Albus Percival Brian Wulfric Dumbledore"], correctAnswer: 1 },
   { question: "Who is the Half-Blood Prince?", options: ["Tom Riddle", "Harry Potter", "Severus Snape", "Sirius Black"], correctAnswer: 2 },
   { question: "What is Hermionie Granger's middle name?", options: ["Jane", "Jean", "Joan", "June"], correctAnswer: 1 },
@@ -350,7 +349,7 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What spell is used to fix Harry's glasses?", options: ["Reparo", "Episkey", "Tergeo", "Scourgify"], correctAnswer: 0 },
   { question: "What is the incantation for the Killing Curse?", options: ["Avada Kedavra", "Crucio", "Imperio", "Morsmordre"], correctAnswer: 0 },
   { question: "Which spell creates water?", options: ["Incendio", "Aguamenti", "Glacius", "Diffindo"], correctAnswer: 1 },
-  { question: "What spell did Hermione use to free Sirius Black?", options: ["Alohomora", "Bombarda", "Relashio", "Bombarda Maxima"], correctAnswer: 1 }, /* Movie canon mostly, but acceptable */
+  { question: "What spell did Hermione use to free Sirius Black?", options: ["Alohomora", "Bombarda", "Relashio", "Bombarda Maxima"], correctAnswer: 1 },
   { question: "What spell creates a duplicate of an object?", options: ["Geminio", "Engorgio", "Reducio", "Reparo"], correctAnswer: 0 },
   { question: "What spell turns a Boggart into something funny?", options: ["Riddikulus", "Expecto Patronum", "Confundo", "Stupefy"], correctAnswer: 0 },
   { question: "What spell silences a target?", options: ["Silencio", "Muffliato", "Quietus", "Langlock"], correctAnswer: 0 },
@@ -373,7 +372,6 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What object selects the champions for the Triwizard Tournament?", options: ["The Sorting Hat", "The Goblet of Fire", "The Sword of Gryffindor", "The Pensieve"], correctAnswer: 1 },
   { question: "What does the Remembrall turn red for?", options: ["Danger", "Lies", "Forgetfulness", "Enemies"], correctAnswer: 2 },
   { question: "Who originally owned the Invisibility Cloak given to Harry?", options: ["James Potter", "Sirius Black", "Dumbledore", "Snape"], correctAnswer: 0 },
-  { question: "What is the name of the magical map of Hogwarts?", options: ["The Marauder's Map", "The Hogwarts Map", "The Seeker's Map", "The Castle Chart"], correctAnswer: 0 },
   { question: "What are the sweets that make you sick to get out of class?", options: ["Skiving Snackboxes", "Canary Creams", "Ton-Tongue Toffee", "Puking Pastilles"], correctAnswer: 0 },
   { question: "What is inside the Snitch?", options: ["The Resurrection Stone", "A ring", "A bean", "Nothing"], correctAnswer: 0 },
   { question: "How much is a Galleon worth in Sickles?", options: ["10", "17", "29", "100"], correctAnswer: 1 },
@@ -392,7 +390,6 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What creature is 'Norbert'?", options: ["A Norwegian Ridgeback", "A Hungarian Horntail", "A Swedish Short-Snout", "A Chinese Fireball"], correctAnswer: 0 },
   { question: "What is Grawp?", options: ["A troll", "A goblin", "A giant", "A centaur"], correctAnswer: 2 },
   { question: "What magical creature is Fluffy?", options: ["A Cerberus", "A Grim", "A Hellhound", "A Chimera"], correctAnswer: 0 },
-  { question: "Which creature feeds on human brains?", options: ["Lethifold", "Pogrebin", "Nogtail", "No such creature"], correctAnswer: 0 }, /* Lethifolds suffocate, but there's a brain room. Wait, tricky. Actually, it's not a common creature. Let's swap.*/
   { question: "What attracts a Niffler?", options: ["Food", "Shiny things", "Music", "Heat"], correctAnswer: 1 },
   { question: "What is a Mandrake's cry known to do?", options: ["Heal wounds", "Kill or knock out", "Break glass", "Summon spirits"], correctAnswer: 1 },
   { question: "What creature is represented by the Ravenclaw mascot?", options: ["Raven", "Eagle", "Hawk", "Crow"], correctAnswer: 1 },
@@ -406,20 +403,17 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What is a bezoar found in?", options: ["A goat's stomach", "A dragon's liver", "A mandrake root", "A unicorn's horn"], correctAnswer: 0 },
   { question: "What potion forces the drinker to tell the truth?", options: ["Felix Felicis", "Amortentia", "Veritaserum", "Polyjuice Potion"], correctAnswer: 2 },
   { question: "What does Amortentia smell like?", options: ["Rotten eggs", "Different to everyone", "Roses", "Chocolate"], correctAnswer: 1 },
-  { question: "What is the main ingredient in Skele-Gro?", options: ["Pufferfish eyes", "Chinese Chomping Cabbage", "Flobberworm Mucus", "Unknown"], correctAnswer: 3 }, /* Actually mentioned as unpalatable, exact recipe vague in books */
+  { question: "What is the main ingredient in Skele-Gro?", options: ["Pufferfish eyes", "Chinese Chomping Cabbage", "Flobberworm Mucus", "Unknown"], correctAnswer: 3 },
   { question: "What potion did Harry win from Slughorn?", options: ["Veritaserum", "Felix Felicis", "Polyjuice Potion", "Draught of Living Death"], correctAnswer: 1 },
   { question: "What happens if you drink Unicorn blood?", options: ["You die instantly", "You become immortal but cursed", "You turn into a unicorn", "You fall asleep"], correctAnswer: 1 },
   { question: "What are the ingredients of the Draught of Living Death?", options: ["Asphodel and Wormwood", "Mandrake and Bezoar", "Moonstone and Hellebore", "Monkshood and Wolfsbane"], correctAnswer: 0 },
   { question: "Who took the Wolfsbane Potion?", options: ["Sirius Black", "Remus Lupin", "Fenrir Greyback", "Peter Pettigrew"], correctAnswer: 1 },
-  { question: "What color is the Polyjuice Potion when Harry drinks it?", options: ["Gold", "Muddy Brown", "Silver", "Green"], correctAnswer: 0 }, /* Wait, for Harry it was gold? No, Goyle was khaki, Crabbe was dark brown. Harry's was 'bright gold' in movie? In book, for Goyle it was khaki. For Harry turning into Goyle? The question is vague. Let's replace. */
   { question: "What potion cures boils?", options: ["Cure for Boils", "Deflating Draught", "Swelling Solution", "Pepperup Potion"], correctAnswer: 0 },
   { question: "What plant is used so you can breathe underwater?", options: ["Gillyweed", "Knotgrass", "Fluxweed", "Mandrake"], correctAnswer: 0 },
-  { question: "What is the antidote to a love potion?", options: ["Hate Potion", "Wiggenweld Potion", "Dr. Ubbly's Oblivious Unction", "Love Potion Antidote"], correctAnswer: 3 }, /* Specific name elusive */
   { question: "Where can you find a Bezoar?", options: ["Apothecary", "Cupboard", "Stomach of a goat", "Forest"], correctAnswer: 2 },
   { question: "What ingredient must be picked at the full moon for Polyjuice Potion?", options: ["Fluxweed", "Knotgrass", "Lacewing Flies", "Leech Juice"], correctAnswer: 0 },
   { question: "What is Monkshood also known as?", options: ["Wolfsbane", "Wormwood", "Willow", "Wattle"], correctAnswer: 0 },
   { question: "How long does Felix Felicis take to brew?", options: ["1 month", "3 months", "6 months", "1 year"], correctAnswer: 2 },
-  { question: "What potion makes you look like your friends?", options: ["Polyjuice Potion", "Essence of Dittany", "Mandrake Draught", "Elixir of Life"], correctAnswer: 0 },
   { question: "Which potion causes steam to come out of the drinker's ears?", options: ["Pepperup Potion", "Skele-Gro", "Polyjuice Potion", "Veritaserum"], correctAnswer: 0 },
   { question: "Who is the Potions Master in Harry's first year?", options: ["Slughorn", "Snape", "Sprout", "Flitwick"], correctAnswer: 1 },
 
@@ -443,7 +437,7 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What is the name of the sweet shop in Hogsmeade?", options: ["Zonko's", "Honeydukes", "Scrivenshaft's", "The Three Broomsticks"], correctAnswer: 1 },
   { question: "Where did Harry find the Sword of Gryffindor in Book 7?", options: ["A frozen pool", "The Sorting Hat", "Gringotts", "Dumbledore's Office"], correctAnswer: 0 },
   { question: "What is the Room of Requirement also known as?", options: ["The Come and Go Room", "The Hidden Room", "The Secret Room", "The Lost Room"], correctAnswer: 0 },
-  { question: "Where is the Hospital Wing located?", options: ["Ground Floor", "First Floor", "Second Floor", "Third Floor"], correctAnswer: 1 }, /* Varies slightly in media, but usually 1st */
+  { question: "Where is the Hospital Wing located?", options: ["Ground Floor", "First Floor", "Second Floor", "Third Floor"], correctAnswer: 1 },
 
   // QUOTES & EVENTS
   { question: "Who said 'After all this time? Always.'?", options: ["Dumbledore", "Snape", "Harry", "Lily"], correctAnswer: 1 },
@@ -489,12 +483,10 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "Who is the caretaker of Hogwarts?", options: ["Hagrid", "Filch", "Flitwick", "Binns"], correctAnswer: 1 },
   { question: "Who is the librarian?", options: ["Madam Pomfrey", "Madam Pince", "Madam Hooch", "Professor Sprout"], correctAnswer: 1 },
   { question: "Who is the nurse?", options: ["Madam Pomfrey", "Madam Pince", "Madam Hooch", "Tonks"], correctAnswer: 0 },
-  { question: "What separates the Forbidden Forest from the school grounds?", options: ["A wall", "A fence", "The Black Lake", "The Whomping Willow"], correctAnswer: 3 }, /* Technically grounds include forest, but distinct. Often Whomping Willow is near. Actually, just distance. Let's change question. */
   { question: "Who teaches Divination?", options: ["Professor Trelawney", "Professor Vector", "Professor Sinistra", "Professor Burbage"], correctAnswer: 0 },
   { question: "Who teaches Care of Magical Creatures (after Kettleburn)?", options: ["Hagrid", "Grubbly-Plank", "Lupin", "Sprout"], correctAnswer: 0 },
   { question: "What is the name of the centaur who teaches Divination?", options: ["Firenze", "Bane", "Ronan", "Magorian"], correctAnswer: 0 },
   { question: "What is the name of the Knight Bus conductor?", options: ["Stan Shunpike", "Ernie Prang", "Cornelius Fudge", "Tom"], correctAnswer: 0 },
-  { question: "What is the name of the Knight Bus driver?", options: ["Stan Shunpike", "Ernie Prang", "Tom", "Leaky"], correctAnswer: 1 },
   { question: "Who is the Minister for Magic in Book 1?", options: ["Cornelius Fudge", "Rufus Scrimgeour", "Pius Thicknesse", "Kingsley Shacklebolt"], correctAnswer: 0 },
   { question: "Who succeeds Cornelius Fudge?", options: ["Rufus Scrimgeour", "Pius Thicknesse", "Kingsley Shacklebolt", "Arthur Weasley"], correctAnswer: 0 },
   { question: "Who kills Dobby?", options: ["Lucius Malfoy", "Bellatrix Lestrange", "Voldemort", "Fenrir Greyback"], correctAnswer: 1 },
@@ -510,14 +502,14 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What house was Merlin in?", options: ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"], correctAnswer: 3 },
   { question: "What is the core of Draco Malfoy's wand?", options: ["Dragon Heartstring", "Unicorn Hair", "Phoenix Feather", "Veela Hair"], correctAnswer: 1 },
   { question: "What is the core of Hermione's wand?", options: ["Dragon Heartstring", "Unicorn Hair", "Phoenix Feather", "Veela Hair"], correctAnswer: 0 },
-  { question: "What is the core of Ron's first wand?", options: ["Unicorn Hair", "Dragon Heartstring", "Phoenix Feather", "Ash"], correctAnswer: 0 }, /* Ash is wood */
+  { question: "What is the core of Ron's first wand?", options: ["Unicorn Hair", "Dragon Heartstring", "Phoenix Feather", "Ash"], correctAnswer: 0 },
   { question: "What wood is Ron's second wand?", options: ["Willow", "Ash", "Yew", "Vine"], correctAnswer: 0 },
   { question: "Who gave Harry the Gillyweed in the book?", options: ["Neville", "Dobby", "Ron", "Hermione"], correctAnswer: 1 },
   { question: "Who gave Harry the Gillyweed in the movie?", options: ["Neville", "Dobby", "Ron", "Hermione"], correctAnswer: 0 },
   { question: "How many points for catching the Snitch?", options: ["150", "100", "50", "200"], correctAnswer: 0 },
   { question: "What position does Harry play?", options: ["Chaser", "Keeper", "Seeker", "Beater"], correctAnswer: 2 },
   { question: "What position does Ron play?", options: ["Chaser", "Keeper", "Seeker", "Beater"], correctAnswer: 1 },
-  { question: "What position did James Potter play?", options: ["Chaser", "Keeper", "Seeker", "Beater"], correctAnswer: 0 }, /* Movie says Seeker, Book implies Chaser mostly, but Rowling confirmed Chaser */
+  { question: "What position did James Potter play?", options: ["Chaser", "Keeper", "Seeker", "Beater"], correctAnswer: 0 },
   { question: "Who is the captain of the Gryffindor team in Book 1?", options: ["Oliver Wood", "Angelina Johnson", "Harry Potter", "Charlie Weasley"], correctAnswer: 0 },
   { question: "Who is the captain of the Slytherin team in Book 2?", options: ["Marcus Flint", "Draco Malfoy", "Terence Higgs", "Blaise Zabini"], correctAnswer: 0 },
   { question: "What ball is used to score goals?", options: ["Quaffle", "Bludger", "Snitch", "Remembrall"], correctAnswer: 0 },
@@ -530,14 +522,13 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "Who kills Charity Burbage?", options: ["Voldemort", "Snape", "Bellatrix", "Draco"], correctAnswer: 0 },
   { question: "What is the name of the snake in the zoo (Book 1)?", options: ["Boa Constrictor", "Python", "Adder", "Cobra"], correctAnswer: 0 },
   { question: "Where was the snake in the zoo going?", options: ["Brazil", "Argentina", "Mexico", "Africa"], correctAnswer: 0 },
-  { question: "What did Hagrid give Harry for his 11th birthday?", options: ["An Owl", "A Cake", "A Wand", "A Toad"], correctAnswer: 1 }, /* He brought the cake first, then bought the owl */
+  { question: "What did Hagrid give Harry for his 11th birthday?", options: ["An Owl", "A Cake", "A Wand", "A Toad"], correctAnswer: 1 },
   { question: "What flavor bean did Dumbledore eat in the hospital wing?", options: ["Earwax", "Vomit", "Toffee", "Spinach"], correctAnswer: 0 },
-  { question: "What flavor bean did George swear was a bogie?", options: ["Green", "Brown", "Yellow", "Red"], correctAnswer: 0 }, /* "You know how I think they have bogie flavored ones?" was Ron? No, George said "Watch out for the...". Actually Ron said "George swears he got a bogie flavored one once." */
   { question: "Who is the Gryffindor Head of House?", options: ["McGonagall", "Snape", "Flitwick", "Sprout"], correctAnswer: 0 },
   { question: "Who is the Slytherin Head of House?", options: ["Snape", "Slughorn", "McGonagall", "Flitwick"], correctAnswer: 0 },
   { question: "Who is the Ravenclaw Head of House?", options: ["Flitwick", "Sprout", "McGonagall", "Snape"], correctAnswer: 0 },
   { question: "Who is the Hufflepuff Head of House?", options: ["Sprout", "Flitwick", "McGonagall", "Snape"], correctAnswer: 0 },
-  { question: "What year did Harry and Ginny get married?", options: ["Unknown in books", "2000", "1999", "2002"], correctAnswer: 0 }, /* Trick question maybe? */
+  { question: "What year did Harry and Ginny get married?", options: ["Unknown in books", "2000", "1999", "2002"], correctAnswer: 0 },
   { question: "What is the final chapter of Book 7 called?", options: ["The Flaw in the Plan", "19 Years Later", "The Forest Again", "King's Cross"], correctAnswer: 1 },
   { question: "Who said 'Not my daughter, you bitch!'?", options: ["Molly Weasley", "Lily Potter", "McGonagall", "Ginny Weasley"], correctAnswer: 0 },
   { question: "Who marked Harry as his equal?", options: ["Voldemort", "Dumbledore", "Snape", "Trelawney"], correctAnswer: 0 },
@@ -558,8 +549,8 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What does the Hogwarts motto translate to?", options: ["Never tickle a sleeping dragon", "Seize the day", "Always faithful", "Out of many, one"], correctAnswer: 0 },
   { question: "Where is the kitchen in Hogwarts?", options: ["Behind a painting of a fruit bowl", "In the basement", "Next to the Great Hall", "In the dungeons"], correctAnswer: 0 },
   { question: "What must you tickle to enter the kitchen?", options: ["A pear", "A banana", "A grape", "An apple"], correctAnswer: 0 },
-  { question: "Who found the Room of Requirement first (in the timeline)?", options: ["Tom Riddle", "Harry Potter", "Dumbledore", "Neville"], correctAnswer: 0 }, /* Likely Tom Riddle or Dumbledore by accident */
-  { question: "What did Dumbledore see in the Mirror of Erised?", options: ["His family alive and whole", "Socks", "Himself as Minister", "Fawkes"], correctAnswer: 1 }, /* He told Harry socks. Truly? Family. */
+  { question: "Who found the Room of Requirement first (in the timeline)?", options: ["Tom Riddle", "Harry Potter", "Dumbledore", "Neville"], correctAnswer: 0 },
+  { question: "What did Dumbledore see in the Mirror of Erised?", options: ["His family alive and whole", "Socks", "Himself as Minister", "Fawkes"], correctAnswer: 1 },
   { question: "What is the name of the female elf Winky belonged to?", options: ["Barty Crouch Sr.", "Hepzibah Smith", "Regulus Black", "Lucius Malfoy"], correctAnswer: 0 },
   { question: "Who owned Hokey?", options: ["Hepzibah Smith", "Barty Crouch", "Tom Riddle", "Slughorn"], correctAnswer: 0 },
   { question: "Who owned Kreacher?", options: ["Sirius Black", "Regulus Black", "Walburga Black", "All of them"], correctAnswer: 3 },
@@ -567,7 +558,7 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What is the name of Dumbledore's sister?", options: ["Ariana", "Kendra", "Honoria", "Bathilda"], correctAnswer: 0 },
   { question: "What is the name of Dumbledore's mother?", options: ["Kendra", "Ariana", "Honoria", "Bathilda"], correctAnswer: 0 },
   { question: "What is the name of Dumbledore's father?", options: ["Percival", "Wulfric", "Brian", "Aberforth"], correctAnswer: 0 },
-  { question: "What village did the Dumbledores live in?", options: ["Mould-on-the-Wold", "Godric's Hollow", "Hogsmeade", "Little Hangleton"], correctAnswer: 0 }, /* Before Godric's Hollow */
+  { question: "What village did the Dumbledores live in?", options: ["Mould-on-the-Wold", "Godric's Hollow", "Hogsmeade", "Little Hangleton"], correctAnswer: 0 },
   { question: "Where did they move to after the father was imprisoned?", options: ["Godric's Hollow", "Mould-on-the-Wold", "Hogsmeade", "Ottery St Catchpole"], correctAnswer: 0 },
   { question: "Who wrote the Daily Prophet article about Dumbledore?", options: ["Rita Skeeter", "Elphias Doge", "Bathilda Bagshot", "Luna Lovegood"], correctAnswer: 0 },
   { question: "Who wrote the obituary for Dumbledore?", options: ["Elphias Doge", "Rita Skeeter", "Harry Potter", "McGonagall"], correctAnswer: 0 },
@@ -581,7 +572,7 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "What was Lee Jordan's code name on Potterwatch?", options: ["River", "Rapier", "Royal", "Romulus"], correctAnswer: 0 },
   { question: "What was Kingsley's code name on Potterwatch?", options: ["Royal", "River", "Rapier", "Romulus"], correctAnswer: 0 },
   { question: "What was Lupin's code name on Potterwatch?", options: ["Romulus", "Remus", "Rapier", "River"], correctAnswer: 0 },
-  { question: "What was Fred's code name on Potterwatch?", options: ["Rapier", "Rodent", "River", "Royal"], correctAnswer: 0 }, /* Or maybe George. One of them. */
+  { question: "What was Fred's code name on Potterwatch?", options: ["Rapier", "Rodent", "River", "Royal"], correctAnswer: 0 },
   { question: "What is the password to Potterwatch?", options: ["Varies", "Albus", "Harry", "Phoenix"], correctAnswer: 0 },
   { question: "Who destroyed the Diadem?", options: ["Crabbe (Fiendfyre)", "Harry (Basilisk Fang)", "Ron (Sword)", "Hermione (Fang)"], correctAnswer: 0 },
   { question: "Who died in the Room of Requirement fire?", options: ["Vincent Crabbe", "Gregory Goyle", "Draco Malfoy", "Blaise Zabini"], correctAnswer: 0 },
@@ -592,7 +583,7 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
   { question: "Who guarded the Gryffindor common room when the Fat Lady fled?", options: ["Sir Cadogan", "The Bloody Baron", "The Grey Lady", "The Fat Friar"], correctAnswer: 0 },
   { question: "What was the password Sir Cadogan changed constantly?", options: ["Many passwords", "Scurvy Cur", "Oddsbodikins", "All of the above"], correctAnswer: 3 },
   { question: "Who attacked the Fat Lady?", options: ["Sirius Black", "Peeves", "Peter Pettigrew", "Voldemort"], correctAnswer: 0 },
-  { question: "How did Sirius enter the castle?", options: ["Through a secret tunnel", "Through the front door", "Flew in", "Apparated"], correctAnswer: 0 }, /* Also had passwords from Crookshanks */
+  { question: "How did Sirius enter the castle?", options: ["Through a secret tunnel", "Through the front door", "Flew in", "Apparated"], correctAnswer: 0 },
   { question: "Who provided the passwords to Sirius?", options: ["Crookshanks", "Neville", "Harry", "Lupin"], correctAnswer: 0 },
   { question: "Whose password list did Crookshanks steal?", options: ["Neville's", "Harry's", "Ron's", "Seamus's"], correctAnswer: 0 },
   { question: "What breed is Fang?", options: ["Boarhound", "Great Dane", "Mastiff", "Bulldog"], correctAnswer: 0 },

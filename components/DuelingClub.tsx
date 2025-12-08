@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Character, BattleResult } from '../types';
 import { OPPONENT_NAMES, HOUSE_THEMES } from '../constants';
-import { Swords, Skull, Sparkles, Coins, Zap } from 'lucide-react';
+import { Swords, Skull, Sparkles, Coins, Zap, Shield, Sword } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DuelingClubProps {
@@ -16,6 +16,10 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
   const [currentOpponent, setCurrentOpponent] = useState<string | null>(null);
   const [currentOpponentImage, setCurrentOpponentImage] = useState<string>("");
   const theme = HOUSE_THEMES[character.house] || HOUSE_THEMES.Gryffindor;
+
+  // Battle Stats State
+  const [playerBattleStats, setPlayerBattleStats] = useState({ attack: 0, defense: 0, total: 0 });
+  const [opponentBattleStats, setOpponentBattleStats] = useState({ attack: 0, defense: 0, total: 0 });
 
   // Animation States
   const [playerAction, setPlayerAction] = useState<'idle' | 'attack' | 'hit'>('idle');
@@ -33,30 +37,48 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
     setCurrentOpponent(oppName);
     setCurrentOpponentImage(oppImage);
 
-    // Initial logs
-    const addLog = (msg: string) => setLogs(prev => [...prev, msg]);
-    addLog(`Duel started against ${oppName}!`);
-    addLog("Entry fee paid.");
+    // 1. Calculate Player Total Stats (Base + Equip + Creatures)
+    let pAttack = character.stats.attack + character.equipped.reduce((acc, item) => acc + (item.attack || 0), 0);
+    let pDefense = character.stats.defense + character.equipped.reduce((acc, item) => acc + (item.defense || 0), 0);
     
-    // Battle Logic Setup
-    // 1. Base Equip Stats
-    let totalAttack = character.stats.attack + character.equipped.reduce((acc, item) => acc + (item.attack || 0), 0);
-    let totalDefense = character.stats.defense + character.equipped.reduce((acc, item) => acc + (item.defense || 0), 0);
-    
-    // 2. Creature Bonuses
+    // Creature Bonuses
     character.creatures.forEach(c => {
         if (c.happiness > 50 && c.hunger > 30) {
-            if (c.bonusType === 'ATTACK_BOOST') totalAttack += c.bonusValue;
-            if (c.bonusType === 'DEFENSE_BOOST') totalDefense += c.bonusValue;
+            if (c.bonusType === 'ATTACK_BOOST') pAttack += c.bonusValue;
+            if (c.bonusType === 'DEFENSE_BOOST') pDefense += c.bonusValue;
         }
     });
 
-    // Simulation Logic
-    const isVictory = Math.random() < 0.40;
-    const oppAttack = isVictory ? totalDefense * 0.8 : totalDefense * 1.5; 
+    const pTotal = pAttack + pDefense;
+    setPlayerBattleStats({ attack: pAttack, defense: pDefense, total: pTotal });
 
+    // 2. Generate Opponent Stats (50% Win Rate Target)
+    // We flip a coin: 50% chance opponent is weaker, 50% chance opponent is stronger
+    const isPlayerWin = Math.random() >= 0.5;
+    
+    let oTotal = 0;
+    if (isPlayerWin) {
+        // Opponent is weaker (0.8x to 0.99x of player total)
+        oTotal = Math.floor(pTotal * (0.8 + Math.random() * 0.19));
+    } else {
+        // Opponent is stronger (1.01x to 1.2x of player total)
+        oTotal = Math.floor(pTotal * (1.01 + Math.random() * 0.2));
+    }
+
+    // Distribute Opponent Total into Attack/Defense randomly
+    const oAttack = Math.floor(oTotal * (0.3 + Math.random() * 0.4)); // 30% to 70% of total
+    const oDefense = oTotal - oAttack;
+
+    setOpponentBattleStats({ attack: oAttack, defense: oDefense, total: oTotal });
+
+    // Initial logs
+    const addLog = (msg: string) => setLogs(prev => [...prev, msg]);
+    addLog(`Duel started against ${oppName}!`);
+    addLog(`Your Power: ${pTotal} (Atk: ${pAttack}, Def: ${pDefense})`);
+    addLog(`${oppName}'s Power: ${oTotal} (Atk: ${oAttack}, Def: ${oDefense})`);
+    
     // Simulation Sequence
-    const steps = 3; // Number of exchanges
+    const steps = 3; 
     for(let i=0; i<steps; i++) {
         // --- Player Turn ---
         await new Promise(r => setTimeout(r, 1000));
@@ -66,8 +88,12 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
         await new Promise(r => setTimeout(r, 600)); // Travel time
         setProjectile('none');
         setOpponentAction('hit');
-        const dmg = Math.floor(totalAttack * (0.8 + Math.random() * 0.4));
-        addLog(`You cast a spell! Hit ${oppName} for ${dmg} damage.`);
+        
+        // Fluff damage calculation for logs (doesn't affect outcome)
+        const hitDmg = Math.floor(pAttack * (0.8 + Math.random() * 0.4));
+        const block = Math.floor(oDefense * 0.5);
+        const actualDmg = Math.max(0, hitDmg - block);
+        addLog(`You cast a spell! ${oppName} blocks ${block}, takes ${actualDmg} damage.`);
         
         await new Promise(r => setTimeout(r, 500));
         setPlayerAction('idle');
@@ -81,28 +107,35 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
         await new Promise(r => setTimeout(r, 600));
         setProjectile('none');
         setPlayerAction('hit');
-        const dmgTaken = Math.floor(oppAttack * (0.8 + Math.random() * 0.4));
-        addLog(`${oppName} retaliates! You take ${dmgTaken} damage.`);
+
+        const oppHit = Math.floor(oAttack * (0.8 + Math.random() * 0.4));
+        const myBlock = Math.floor(pDefense * 0.5);
+        const actualTaken = Math.max(0, oppHit - myBlock);
+        addLog(`${oppName} retaliates! You block ${myBlock}, take ${actualTaken} damage.`);
 
         await new Promise(r => setTimeout(r, 500));
         setPlayerAction('idle');
         setOpponentAction('idle');
     }
 
-    // Final Blow
+    // Final Blow based on Total Stats
     await new Promise(r => setTimeout(r, 1000));
-    if (isVictory) {
+    const playerWins = pTotal >= oTotal; // Victory Condition
+
+    if (playerWins) {
         setPlayerAction('attack');
         setProjectile('player');
         await new Promise(r => setTimeout(r, 600));
-        setOpponentAction('hit'); // Stays hit for a bit?
-        addLog(`You stunned ${oppName}! Victory!`);
+        setOpponentAction('hit'); 
+        addLog(`Your magic overpowers ${oppName}! (Total ${pTotal} vs ${oTotal})`);
+        addLog(`Victory!`);
     } else {
         setOpponentAction('attack');
         setProjectile('opponent');
         await new Promise(r => setTimeout(r, 600));
         setPlayerAction('hit');
-        addLog(`You were disarmed by ${oppName}. Defeat.`);
+        addLog(`${oppName}'s magic is too strong! (Total ${oTotal} vs ${pTotal})`);
+        addLog(`Defeat.`);
     }
 
     setProjectile('none');
@@ -111,9 +144,9 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
     setTimeout(() => {
       setIsBattling(false);
       onBattleComplete({
-        victory: isVictory,
-        goldEarned: isVictory ? 100 : -100,
-        log: logs, // Pass the accumulated logs
+        victory: playerWins,
+        goldEarned: playerWins ? 100 : -50,
+        log: logs, 
         opponentName: oppName,
         date: new Date().toISOString()
       });
@@ -131,21 +164,23 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
         {/* Magical Atmosphere BG */}
         <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${theme.gradient} opacity-50 pointer-events-none`} />
 
-        <div className="relative z-10 p-8 flex-1 flex flex-col">
+        <div className="relative z-10 p-4 md:p-8 flex-1 flex flex-col">
           <h2 className={`text-4xl font-magic text-center bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-300 to-slate-500 mb-2`}>
             The Dueling Club
           </h2>
-          <p className="text-slate-400 italic font-serif text-center mb-8">"Wands at the ready!"</p>
+          <p className="text-slate-400 italic font-serif text-center mb-8">"Victory goes to the strongest wizard."</p>
 
           {!isBattling ? (
             <div className="flex-1 flex flex-col items-center justify-center space-y-12">
-               <div className="flex justify-center gap-12 items-center">
+               <div className="flex flex-col md:flex-row justify-center gap-12 items-center">
                   <div className="text-center">
-                      <div className={`w-32 h-32 rounded-full ${theme.accentBg} border-4 ${theme.border.replace('border', 'border-solid')} flex items-center justify-center mx-auto mb-4 shadow-lg`}>
+                      <div className={`w-32 h-32 rounded-full ${theme.accentBg} border-4 ${theme.border.replace('border', 'border-solid')} flex items-center justify-center mx-auto mb-4 shadow-lg relative group`}>
                         <img src={character.avatarUrl} className="w-full h-full rounded-full object-cover" />
+                        <div className="absolute -bottom-2 bg-slate-900 px-3 py-1 rounded-full text-xs font-bold border border-slate-700">
+                           PWR: {(character.stats.attack + character.stats.defense + character.equipped.reduce((a,i)=>a+(i.attack||0)+(i.defense||0), 0))}
+                        </div>
                       </div>
                       <p className={`font-bold text-xl ${theme.primary}`}>{character.name}</p>
-                      <p className="text-slate-500 text-sm">Level {Math.floor((character.stats.attack + character.stats.defense)/50) + 1}</p>
                   </div>
                   <div className="flex flex-col items-center">
                      <span className="text-6xl font-magic text-red-500/80 drop-shadow-lg">VS</span>
@@ -183,8 +218,28 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
             </div>
           ) : (
             <div className="flex-1 relative flex flex-col">
+               {/* STATS DISPLAY */}
+               <div className="flex justify-between px-2 md:px-12 mb-4 text-sm font-bold uppercase tracking-wider">
+                   <div className="flex flex-col items-center gap-1 bg-slate-900/80 p-3 rounded border border-slate-700 min-w-[120px]">
+                        <span className="text-slate-400 text-xs">Your Power</span>
+                        <div className="text-2xl text-white">{playerBattleStats.total}</div>
+                        <div className="flex gap-3 text-xs mt-1 w-full justify-center border-t border-slate-700 pt-1">
+                             <span className="flex items-center gap-1 text-red-400"><Sword className="w-3 h-3"/> {playerBattleStats.attack}</span>
+                             <span className="flex items-center gap-1 text-blue-400"><Shield className="w-3 h-3"/> {playerBattleStats.defense}</span>
+                        </div>
+                   </div>
+                   <div className="flex flex-col items-center gap-1 bg-slate-900/80 p-3 rounded border border-red-900/50 min-w-[120px]">
+                        <span className="text-slate-400 text-xs">Enemy Power</span>
+                        <div className="text-2xl text-red-400">{opponentBattleStats.total}</div>
+                        <div className="flex gap-3 text-xs mt-1 w-full justify-center border-t border-slate-800 pt-1">
+                             <span className="flex items-center gap-1 text-red-500"><Sword className="w-3 h-3"/> {opponentBattleStats.attack}</span>
+                             <span className="flex items-center gap-1 text-blue-500"><Shield className="w-3 h-3"/> {opponentBattleStats.defense}</span>
+                        </div>
+                   </div>
+               </div>
+
                {/* BATTLE ARENA VISUAL */}
-               <div className="flex-1 flex justify-between items-center px-8 relative bg-black/20 rounded-xl border border-white/5 overflow-hidden">
+               <div className="flex-1 flex justify-between items-center px-8 relative bg-black/20 rounded-xl border border-white/5 overflow-hidden min-h-[250px]">
                     {/* Background Ambience */}
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 animate-pulse"></div>
 
@@ -193,10 +248,10 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
                         animate={playerAction === 'attack' ? { x: 50 } : playerAction === 'hit' ? { x: -20, rotate: -5, opacity: [1, 0.5, 1] } : { x: 0 }}
                         className="relative z-10 text-center"
                     >
-                        <div className={`w-32 h-32 rounded-full border-4 ${theme.border.replace('border', 'border-solid')} shadow-[0_0_30px_rgba(255,255,255,0.1)]`}>
+                        <div className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${theme.border.replace('border', 'border-solid')} shadow-[0_0_30px_rgba(255,255,255,0.1)]`}>
                              <img src={character.avatarUrl} className="w-full h-full rounded-full object-cover" />
                         </div>
-                        <div className={`mt-4 h-2 bg-slate-700 rounded-full w-32 overflow-hidden mx-auto border border-slate-600`}>
+                        <div className={`mt-4 h-2 bg-slate-700 rounded-full w-24 md:w-32 overflow-hidden mx-auto border border-slate-600`}>
                              <motion.div 
                                 initial={{ width: '100%' }}
                                 animate={{ width: playerAction === 'hit' ? ['100%', '80%', '60%'] : '100%' }}
@@ -253,10 +308,10 @@ export const DuelingClub: React.FC<DuelingClubProps> = ({ character, onBattleCom
                         animate={opponentAction === 'attack' ? { x: -50 } : opponentAction === 'hit' ? { x: 20, rotate: 5, opacity: [1, 0.5, 1] } : { x: 0 }}
                         className="relative z-10 text-center"
                     >
-                         <div className="w-32 h-32 rounded-full border-4 border-red-900/50 shadow-[0_0_30px_rgba(220,38,38,0.2)]">
+                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-red-900/50 shadow-[0_0_30px_rgba(220,38,38,0.2)]">
                              <img src={currentOpponentImage} className="w-full h-full rounded-full object-cover grayscale-[0.2]" />
                         </div>
-                         <div className={`mt-4 h-2 bg-slate-700 rounded-full w-32 overflow-hidden mx-auto border border-slate-600`}>
+                         <div className={`mt-4 h-2 bg-slate-700 rounded-full w-24 md:w-32 overflow-hidden mx-auto border border-slate-600`}>
                              <motion.div 
                                 initial={{ width: '100%' }}
                                 animate={{ width: opponentAction === 'hit' ? ['100%', '80%', '60%'] : '100%' }}
