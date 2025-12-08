@@ -309,7 +309,6 @@ export const CREATURE_SHOP: CreatureDefinition[] = [
 ];
 
 export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
-  // ... (Existing questions kept for brevity, assuming they are unchanged)
   {
     question: "What is the core of the Elder Wand?",
     options: ["Phoenix Feather", "Dragon Heartstring", "Thestral Tail Hair", "Unicorn Hair"],
@@ -320,22 +319,6 @@ export const TRIVIA_QUESTIONS: TriviaQuestion[] = [
     options: ["Amortentia", "Polyjuice Potion", "Veritaserum", "Felix Felicis"],
     correctAnswer: 3
   },
-  // ... (Rest of questions)
-];
-
-export const SHOP_ITEMS: GameItem[] = [
-    // ... (Existing items kept for brevity)
-    {
-    id: 1001,
-    name: "Harry Potter's Wand",
-    description: "11\" Holly, Phoenix Feather. Nice and supple. A brother to the Dark Lord's wand.",
-    price: 3000,
-    type: 'wand',
-    attack: 280,
-    defense: 50,
-    imageUrl: "https://picsum.photos/seed/wand_harry/200/200"
-  },
-  // ...
 ];
 
 export const OPPONENT_NAMES = [
@@ -349,8 +332,6 @@ export const OPPONENT_NAMES = [
   "Peter Pettigrew",
   "Barty Crouch Jr."
 ];
-
-// --- WAND CRAFTING CONSTANTS ---
 
 export const WAND_WOODS: WandWood[] = [
   { id: 'holly', name: 'Holly', description: 'A rare kind of wood, traditionally considered protective.', cost: 500, attackBonus: 30, color: '#e2d7c0' },
@@ -379,4 +360,115 @@ export const WAND_COLORS: WandColor[] = [
   { id: 'void', name: 'Void Black', hex: '#0f172a', cost: 200 },
   { id: 'ivory', name: 'Ivory White', hex: '#f8fafc', cost: 150 },
   { id: 'gold', name: 'Gilded', hex: '#ca8a04', cost: 500 },
+];
+
+export const SHOP_ITEMS: GameItem[] = [
+  // WANDS
+  { id: 2001, name: "10\" Oak, Dragon Heartstring", description: "Reliable and sturdy. Good for transfiguration.", price: 500, type: 'wand', attack: 45, defense: 10, imageUrl: "https://picsum.photos/seed/wand_oak/200/200" },
+  { id: 2002, name: "11\" Holly, Phoenix Feather", description: "A brother to the Dark Lord's wand.", price: 3000, type: 'wand', attack: 280, defense: 50, imageUrl: "https://picsum.photos/seed/wand_harry/200/200" },
+  { id: 2003, name: "14\" Willow, Unicorn Hair", description: "Great for charms work. belonged to a famous redhead.", price: 450, type: 'wand', attack: 40, defense: 15, imageUrl: "https://picsum.photos/seed/wand_willow/200/200" },
+  { id: 2004, name: "12\" Ash, Unicorn Hair", description: "Stubborn wand for a stubborn wizard.", price: 400, type: 'wand', attack: 35, defense: 10, imageUrl: "https://picsum.photos/seed/wand_ash/200/200" },
+  { id: 2005, name: "13.5\" Yew, Dragon Heartstring", description: "Powerful and precise. Often associated with dueling.", price: 1200, type: 'wand', attack: 110, defense: 20, imageUrl: "https://picsum.photos/seed/wand_yew/200/200" },
+  { id: 2006, name: "15\" Elder, Thestral Hair", description: "The Deathstick. Unbeatable.", price: 50000, type: 'wand', attack: 500, defense: 100, imageUrl: "https://picsum.photos/seed/wand_elder/200/200" },
+  { id: 2007, name: "10.75\" Vine, Dragon Heartstring", description: "Sensitive and intelligent.", price: 800, type: 'wand', attack: 75, defense: 30, imageUrl: "https://picsum.photos/seed/wand_vine/200/200" },
+  { id: 2008, name: "10.25\" Cypress, Unicorn Hair", description: "Associated with nobility. Ideal for self-sacrifice.", price: 700, type: 'wand', attack: 65, defense: 25, imageUrl: "https://picsum.photos/seed/wand_cypress/200/200" },
+  { id: 2009, name: "9.5\" Fir, Dragon Heartstring", description: "Resilient. Requires strength of mind.", price: 650, type: 'wand', attack: 60, defense: 20, imageUrl: "https://picsum.photos/seed/wand_fir/200/200" },
+  { id: 2010, name: "13\" Cherry, Unicorn Hair", description: "Prized in Japan. Possesses lethal power.", price: 900, type: 'wand', attack: 85, defense: 15, imageUrl: "https://picsum.photos/seed/wand_cherry/200/200" },
+  { id: 2011, name: "18\" Elm, Dragon Heartstring", description: "Dignified. Produces the fewest accidents.", price: 1100, type: 'wand', attack: 95, defense: 35, imageUrl: "https://picsum.photos/seed/wand_elm/200/200" },
+  { id: 2012, name: "12.75\" Walnut, Dragon Heartstring", description: "For the highly intelligent witch or wizard.", price: 1000, type: 'wand', attack: 90, defense: 10, imageUrl: "https://picsum.photos/seed/wand_walnut/200/200" },
+  { id: 2013, name: "10\" Hawthorn, Unicorn Hair", description: "Complex and intriguing. Good for healing and curses.", price: 850, type: 'wand', attack: 70, defense: 40, imageUrl: "https://picsum.photos/seed/wand_hawthorn/200/200" },
+  { id: 2014, name: "9.5\" Rosewood, Veela Hair", description: "Beautiful and temperamental.", price: 1500, type: 'wand', attack: 100, defense: 60, imageUrl: "https://picsum.photos/seed/wand_rosewood/200/200" },
+  { id: 2015, name: "11\" Blackthorn, Dragon Heartstring", description: "Best suited for a warrior.", price: 950, type: 'wand', attack: 92, defense: 25, imageUrl: "https://picsum.photos/seed/wand_blackthorn/200/200" },
+  { id: 2016, name: "10.25\" Hornbeam, Dragon Heartstring", description: "For one with a singular passion.", price: 880, type: 'wand', attack: 82, defense: 18, imageUrl: "https://picsum.photos/seed/wand_hornbeam/200/200" },
+  { id: 2017, name: "9.25\" Chestnut, Dragon Heartstring", description: "Attracted to skilled tamers of beasts.", price: 720, type: 'wand', attack: 68, defense: 22, imageUrl: "https://picsum.photos/seed/wand_chestnut/200/200" },
+  { id: 2018, name: "11.5\" Aspen, Phoenix Feather", description: "Outstanding for martial magic. The duelist's wand.", price: 1300, type: 'wand', attack: 115, defense: 45, imageUrl: "https://picsum.photos/seed/wand_aspen/200/200" },
+  { id: 2019, name: "10.5\" Cedar, Dragon Heartstring", description: "For the perspicacious and loyal.", price: 780, type: 'wand', attack: 72, defense: 28, imageUrl: "https://picsum.photos/seed/wand_cedar/200/200" },
+  { id: 2020, name: "11\" Dogwood, Unicorn Hair", description: "Playful and mischievous. Refuses non-verbal spells.", price: 620, type: 'wand', attack: 55, defense: 12, imageUrl: "https://picsum.photos/seed/wand_dogwood/200/200" },
+  { id: 2021, name: "13.25\" Ebony, Dragon Heartstring", description: "For those who hold fast to their beliefs.", price: 1400, type: 'wand', attack: 120, defense: 30, imageUrl: "https://picsum.photos/seed/wand_ebony/200/200" },
+  { id: 2022, name: "9.75\" Hazel, Unicorn Hair", description: "Sensitive. Reflects its owner's emotional state.", price: 680, type: 'wand', attack: 62, defense: 35, imageUrl: "https://picsum.photos/seed/wand_hazel/200/200" },
+  { id: 2023, name: "12\" Larch, Phoenix Feather", description: "Instills courage and confidence.", price: 920, type: 'wand', attack: 88, defense: 32, imageUrl: "https://picsum.photos/seed/wand_larch/200/200" },
+  { id: 2024, name: "11.25\" Laurel, Dragon Heartstring", description: "Cannot perform a dishonorable act.", price: 860, type: 'wand', attack: 80, defense: 50, imageUrl: "https://picsum.photos/seed/wand_laurel/200/200" },
+  { id: 2025, name: "10\" Maple, Phoenix Feather", description: "For the traveller and explorer.", price: 890, type: 'wand', attack: 84, defense: 26, imageUrl: "https://picsum.photos/seed/wand_maple/200/200" },
+  { id: 2026, name: "12.5\" Pear, Unicorn Hair", description: "Resilient. Never looks worn.", price: 710, type: 'wand', attack: 66, defense: 38, imageUrl: "https://picsum.photos/seed/wand_pear/200/200" },
+  { id: 2027, name: "11\" Pine, Phoenix Feather", description: "For the independent and individual.", price: 940, type: 'wand', attack: 89, defense: 29, imageUrl: "https://picsum.photos/seed/wand_pine/200/200" },
+  { id: 2028, name: "10.75\" Poplar, Dragon Heartstring", description: "A wand you can rely upon. Consistent.", price: 640, type: 'wand', attack: 58, defense: 42, imageUrl: "https://picsum.photos/seed/wand_poplar/200/200" },
+  { id: 2029, name: "10\" Red Oak, Unicorn Hair", description: "Fast reactions. Perfect for dueling.", price: 980, type: 'wand', attack: 94, defense: 15, imageUrl: "https://picsum.photos/seed/wand_redoak/200/200" },
+  { id: 2030, name: "11.5\" Redwood, Phoenix Feather", description: "Bring good fortune to its owner.", price: 1600, type: 'wand', attack: 105, defense: 55, imageUrl: "https://picsum.photos/seed/wand_redwood/200/200" },
+  { id: 2031, name: "12.25\" Rowan, Unicorn Hair", description: "Produces the strongest defensive charms.", price: 850, type: 'wand', attack: 40, defense: 90, imageUrl: "https://picsum.photos/seed/wand_rowan/200/200" },
+  { id: 2032, name: "10.5\" Silver Lime, Dragon Heartstring", description: "Rare. Favored by Seers and Legilimens.", price: 1150, type: 'wand', attack: 98, defense: 48, imageUrl: "https://picsum.photos/seed/wand_silverlime/200/200" },
+  { id: 2033, name: "9\" Spruce, Unicorn Hair", description: "Requires a firm hand. Not for the tentative.", price: 730, type: 'wand', attack: 69, defense: 21, imageUrl: "https://picsum.photos/seed/wand_spruce/200/200" },
+  { id: 2034, name: "11\" Sycamore, Dragon Heartstring", description: "Craves variety. Combusts if bored.", price: 760, type: 'wand', attack: 74, defense: 14, imageUrl: "https://picsum.photos/seed/wand_sycamore/200/200" },
+  
+  // SPELLS
+  { id: 3001, name: "Expelliarmus", description: "The Disarming Charm. A dueling staple.", price: 200, type: 'spell', attack: 20, defense: 10, imageUrl: "https://picsum.photos/seed/spell_expelliarmus/200/200" },
+  { id: 3002, name: "Stupefy", description: "Stuns the target, rendering them unconscious.", price: 300, type: 'spell', attack: 35, defense: 5, imageUrl: "https://picsum.photos/seed/spell_stupefy/200/200" },
+  { id: 3003, name: "Protego", description: "The Shield Charm. Reflects minor spells.", price: 250, type: 'spell', attack: 0, defense: 40, imageUrl: "https://picsum.photos/seed/spell_protego/200/200" },
+  { id: 3004, name: "Incendio", description: "Conjures a jet of flames.", price: 350, type: 'spell', attack: 45, defense: 0, imageUrl: "https://picsum.photos/seed/spell_incendio/200/200" },
+  { id: 3005, name: "Petrificus Totalus", description: "Full Body-Bind Curse.", price: 400, type: 'spell', attack: 30, defense: 20, imageUrl: "https://picsum.photos/seed/spell_petrificus/200/200" },
+  { id: 3006, name: "Flipendo", description: "Knockback Jinx. Pushes enemies away.", price: 150, type: 'spell', attack: 15, defense: 10, imageUrl: "https://picsum.photos/seed/spell_flipendo/200/200" },
+  { id: 3007, name: "Rictusempra", description: "Tickling Charm. Distracts the opponent.", price: 180, type: 'spell', attack: 10, defense: 15, imageUrl: "https://picsum.photos/seed/spell_rictusempra/200/200" },
+  { id: 3008, name: "Wingardium Leviosa", description: "Levitation Charm. Drop things on foes.", price: 100, type: 'spell', attack: 10, defense: 5, imageUrl: "https://picsum.photos/seed/spell_wingardium/200/200" },
+  { id: 3009, name: "Lumos Solem", description: "Blinding flash of sunlight.", price: 220, type: 'spell', attack: 15, defense: 25, imageUrl: "https://picsum.photos/seed/spell_lumos/200/200" },
+  { id: 3010, name: "Confringo", description: "Blasting Curse. Causes an explosion.", price: 600, type: 'spell', attack: 70, defense: 0, imageUrl: "https://picsum.photos/seed/spell_confringo/200/200" },
+  { id: 3011, name: "Diffindo", description: "Severing Charm. Cuts through defenses.", price: 450, type: 'spell', attack: 55, defense: 0, imageUrl: "https://picsum.photos/seed/spell_diffindo/200/200" },
+  { id: 3012, name: "Bombarda", description: "Provokes a small explosion.", price: 500, type: 'spell', attack: 60, defense: 0, imageUrl: "https://picsum.photos/seed/spell_bombarda/200/200" },
+  { id: 3013, name: "Bombarda Maxima", description: "Provokes a large explosion.", price: 800, type: 'spell', attack: 90, defense: 0, imageUrl: "https://picsum.photos/seed/spell_bombardamax/200/200" },
+  { id: 3014, name: "Reducto", description: "Reductor Curse. Blasts solid objects to dust.", price: 550, type: 'spell', attack: 65, defense: 0, imageUrl: "https://picsum.photos/seed/spell_reducto/200/200" },
+  { id: 3015, name: "Sectumsempra", description: "For enemies. Causes deep cuts.", price: 2000, type: 'spell', attack: 150, defense: 0, imageUrl: "https://picsum.photos/seed/spell_sectumsempra/200/200" },
+  { id: 3016, name: "Levicorpus", description: "Dangles the victim by their ankle.", price: 300, type: 'spell', attack: 25, defense: 25, imageUrl: "https://picsum.photos/seed/spell_levicorpus/200/200" },
+  { id: 3017, name: "Oppugno", description: "Directs objects to attack.", price: 350, type: 'spell', attack: 35, defense: 10, imageUrl: "https://picsum.photos/seed/spell_oppugno/200/200" },
+  { id: 3018, name: "Serpensortia", description: "Summons a snake.", price: 400, type: 'spell', attack: 40, defense: 10, imageUrl: "https://picsum.photos/seed/spell_serpensortia/200/200" },
+  { id: 3019, name: "Aguamenti", description: "Conjures water. Extinguishes fires.", price: 150, type: 'spell', attack: 5, defense: 30, imageUrl: "https://picsum.photos/seed/spell_aguamenti/200/200" },
+  { id: 3020, name: "Glacius", description: "Freezes the target.", price: 380, type: 'spell', attack: 30, defense: 30, imageUrl: "https://picsum.photos/seed/spell_glacius/200/200" },
+  { id: 3021, name: "Episkey", description: "Heals minor injuries instantly.", price: 500, type: 'spell', attack: 0, defense: 60, imageUrl: "https://picsum.photos/seed/spell_episkey/200/200" },
+  { id: 3022, name: "Protego Totalum", description: "Protects an area from spells.", price: 700, type: 'spell', attack: 0, defense: 80, imageUrl: "https://picsum.photos/seed/spell_prototal/200/200" },
+  { id: 3023, name: "Salvio Hexia", description: "Deflects hexes.", price: 650, type: 'spell', attack: 0, defense: 70, imageUrl: "https://picsum.photos/seed/spell_salvio/200/200" },
+  { id: 3024, name: "Expecto Patronum", description: "Summons a spirit guardian.", price: 1200, type: 'spell', attack: 20, defense: 120, imageUrl: "https://picsum.photos/seed/spell_patronus/200/200" },
+  { id: 3025, name: "Riddikulus", description: "Forces a boggart to assume a funny shape.", price: 250, type: 'spell', attack: 15, defense: 20, imageUrl: "https://picsum.photos/seed/spell_riddikulus/200/200" },
+  { id: 3026, name: "Confundo", description: "Causes confusion.", price: 450, type: 'spell', attack: 20, defense: 40, imageUrl: "https://picsum.photos/seed/spell_confundo/200/200" },
+  { id: 3027, name: "Obliviate", description: "Erases memories. Disorienting.", price: 800, type: 'spell', attack: 10, defense: 80, imageUrl: "https://picsum.photos/seed/spell_obliviate/200/200" },
+  { id: 3028, name: "Langlock", description: "Glues the victim's tongue to the roof of their mouth.", price: 320, type: 'spell', attack: 25, defense: 15, imageUrl: "https://picsum.photos/seed/spell_langlock/200/200" },
+  { id: 3029, name: "Furnunculus", description: "Covers the target in boils.", price: 280, type: 'spell', attack: 30, defense: 5, imageUrl: "https://picsum.photos/seed/spell_furnunculus/200/200" },
+  { id: 3030, name: "Tarantallegra", description: "Forces the legs to dance uncontrollably.", price: 330, type: 'spell', attack: 28, defense: 10, imageUrl: "https://picsum.photos/seed/spell_tarantallegra/200/200" },
+  { id: 3031, name: "Silencio", description: "Silences the target.", price: 420, type: 'spell', attack: 10, defense: 40, imageUrl: "https://picsum.photos/seed/spell_silencio/200/200" },
+  { id: 3032, name: "Incarcerous", description: "Binds the target with ropes.", price: 480, type: 'spell', attack: 20, defense: 45, imageUrl: "https://picsum.photos/seed/spell_incarcerous/200/200" },
+  { id: 3033, name: "Locomotor Mortis", description: "Leg-Locker Curse.", price: 290, type: 'spell', attack: 25, defense: 10, imageUrl: "https://picsum.photos/seed/spell_locomotor/200/200" },
+  { id: 3034, name: "Fiendfyre", description: "Cursed fire that incinerates everything.", price: 5000, type: 'spell', attack: 300, defense: 0, imageUrl: "https://picsum.photos/seed/spell_fiendfyre/200/200" },
+  
+  // EQUIPMENT
+  { id: 4001, name: "Hogwarts School Robes", description: "Standard uniform. Plain black.", price: 50, type: 'equipment', attack: 0, defense: 10, imageUrl: "https://picsum.photos/seed/equip_robes/200/200" },
+  { id: 4002, name: "Winter Cloak", description: "Heavy wool with silver fastenings.", price: 120, type: 'equipment', attack: 0, defense: 25, imageUrl: "https://picsum.photos/seed/equip_cloak/200/200" },
+  { id: 4003, name: "Dragon-Hide Gloves", description: "Essential for handling dangerous plants.", price: 200, type: 'equipment', attack: 5, defense: 30, imageUrl: "https://picsum.photos/seed/equip_gloves/200/200" },
+  { id: 4004, name: "Pointed Hat", description: "For day wear. Stiffened.", price: 40, type: 'equipment', attack: 0, defense: 5, imageUrl: "https://picsum.photos/seed/equip_hat/200/200" },
+  { id: 4005, name: "Protective Goggles", description: "For Quidditch or Potions.", price: 80, type: 'equipment', attack: 0, defense: 15, imageUrl: "https://picsum.photos/seed/equip_goggles/200/200" },
+  { id: 4006, name: "Quidditch Helmet", description: "Leather, padded.", price: 150, type: 'equipment', attack: 0, defense: 20, imageUrl: "https://picsum.photos/seed/equip_helmet/200/200" },
+  { id: 4007, name: "Quidditch Pads", description: "Elbow and knee protection.", price: 100, type: 'equipment', attack: 0, defense: 15, imageUrl: "https://picsum.photos/seed/equip_pads/200/200" },
+  { id: 4008, name: "Nimbus 2000", description: "Fast, maneuverable broomstick.", price: 2000, type: 'equipment', attack: 50, defense: 50, imageUrl: "https://picsum.photos/seed/equip_nimbus2000/200/200" },
+  { id: 4009, name: "Nimbus 2001", description: "Faster than the 2000. Sleek black.", price: 2500, type: 'equipment', attack: 60, defense: 55, imageUrl: "https://picsum.photos/seed/equip_nimbus2001/200/200" },
+  { id: 4010, name: "Firebolt", description: "The fastest broom in the world.", price: 5000, type: 'equipment', attack: 100, defense: 80, imageUrl: "https://picsum.photos/seed/equip_firebolt/200/200" },
+  { id: 4011, name: "Cleansweep Seven", description: "Reliable, if not flashy.", price: 800, type: 'equipment', attack: 30, defense: 30, imageUrl: "https://picsum.photos/seed/equip_cleansweep/200/200" },
+  { id: 4012, name: "Comet 260", description: "Good braking charm. A bit slow.", price: 600, type: 'equipment', attack: 20, defense: 25, imageUrl: "https://picsum.photos/seed/equip_comet/200/200" },
+  { id: 4013, name: "Remembrall", description: "Turns red if you've forgotten something.", price: 50, type: 'equipment', attack: 0, defense: 5, imageUrl: "https://picsum.photos/seed/equip_remembrall/200/200" },
+  { id: 4014, name: "Sneakoscope", description: "Lights up when someone untrustworthy is near.", price: 150, type: 'equipment', attack: 0, defense: 20, imageUrl: "https://picsum.photos/seed/equip_sneakoscope/200/200" },
+  { id: 4015, name: "Omnioculars", description: "Replay action, slow motion.", price: 300, type: 'equipment', attack: 5, defense: 5, imageUrl: "https://picsum.photos/seed/equip_omni/200/200" },
+  { id: 4016, name: "Deluminator", description: "Sucks light from the room.", price: 1000, type: 'equipment', attack: 0, defense: 50, imageUrl: "https://picsum.photos/seed/equip_deluminator/200/200" },
+  { id: 4017, name: "Invisibility Cloak", description: "Rare silvery cloak. Renders wearer invisible.", price: 10000, type: 'equipment', attack: 10, defense: 200, imageUrl: "https://picsum.photos/seed/equip_invis/200/200" },
+  { id: 4018, name: "Time-Turner", description: "Hour reversal charm. Handle with care.", price: 15000, type: 'equipment', attack: 50, defense: 150, imageUrl: "https://picsum.photos/seed/equip_time/200/200" },
+  { id: 4019, name: "Marauder's Map", description: "Shows everyone in Hogwarts.", price: 3000, type: 'equipment', attack: 20, defense: 80, imageUrl: "https://picsum.photos/seed/equip_map/200/200" },
+  { id: 4020, name: "Monster Book of Monsters", description: "Stroking the spine calms it.", price: 120, type: 'equipment', attack: 15, defense: 5, imageUrl: "https://picsum.photos/seed/equip_book_monster/200/200" },
+  { id: 4021, name: "Advanced Potion Making", description: "Contains notes from the Half-Blood Prince.", price: 200, type: 'equipment', attack: 25, defense: 10, imageUrl: "https://picsum.photos/seed/equip_book_potions/200/200" },
+  { id: 4022, name: "History of Magic", description: "By Bathilda Bagshot. Very dry.", price: 60, type: 'equipment', attack: 0, defense: 5, imageUrl: "https://picsum.photos/seed/equip_book_history/200/200" },
+  { id: 4023, name: "Hogwarts: A History", description: "Hermione's favorite.", price: 80, type: 'equipment', attack: 0, defense: 10, imageUrl: "https://picsum.photos/seed/equip_book_hog/200/200" },
+  { id: 4024, name: "Golden Snitch", description: "Flesh memory. Good luck charm.", price: 500, type: 'equipment', attack: 0, defense: 40, imageUrl: "https://picsum.photos/seed/equip_snitch/200/200" },
+  { id: 4025, name: "Bezoar Case", description: "Carrying case for antidotes.", price: 100, type: 'equipment', attack: 0, defense: 30, imageUrl: "https://picsum.photos/seed/equip_bezoar/200/200" },
+  { id: 4026, name: "Foe-Glass", description: "Shows enemies when they are close.", price: 600, type: 'equipment', attack: 10, defense: 60, imageUrl: "https://picsum.photos/seed/equip_foeglass/200/200" },
+  { id: 4027, name: "Secrecy Sensor", description: "Vibrates when detecting lies.", price: 350, type: 'equipment', attack: 0, defense: 45, imageUrl: "https://picsum.photos/seed/equip_sensor/200/200" },
+  { id: 4028, name: "Probity Probe", description: "Detects concealment charms.", price: 400, type: 'equipment', attack: 0, defense: 50, imageUrl: "https://picsum.photos/seed/equip_probe/200/200" },
+  { id: 4029, name: "Mokeskin Pouch", description: "Only the owner can get things out.", price: 250, type: 'equipment', attack: 0, defense: 35, imageUrl: "https://picsum.photos/seed/equip_pouch/200/200" },
+  { id: 4030, name: "Two-Way Mirror", description: "Communicate with the holder of the other mirror.", price: 500, type: 'equipment', attack: 0, defense: 20, imageUrl: "https://picsum.photos/seed/equip_mirror/200/200" },
+  { id: 4031, name: "Pensieve", description: "Review memories.", price: 2000, type: 'equipment', attack: 0, defense: 100, imageUrl: "https://picsum.photos/seed/equip_pensieve/200/200" },
+  { id: 4032, name: "Put-Outer", description: "Dumbledore's invention.", price: 1000, type: 'equipment', attack: 0, defense: 40, imageUrl: "https://picsum.photos/seed/equip_putouter/200/200" },
+  { id: 4033, name: "Spectrespecs", description: "See wrackspurts.", price: 40, type: 'equipment', attack: 0, defense: 5, imageUrl: "https://picsum.photos/seed/equip_specs/200/200" },
+  { id: 4034, name: "Weasley's Wildfire Whiz-bangs", description: "Unstoppable fireworks.", price: 100, type: 'equipment', attack: 40, defense: 0, imageUrl: "https://picsum.photos/seed/equip_bangs/200/200" },
+  { id: 4035, name: "Peruvian Instant Darkness Powder", description: "Creates impenetrable darkness.", price: 300, type: 'equipment', attack: 0, defense: 70, imageUrl: "https://picsum.photos/seed/equip_powder/200/200" }
 ];
